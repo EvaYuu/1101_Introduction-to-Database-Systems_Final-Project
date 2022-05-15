@@ -63,11 +63,11 @@
             $isException = true;
             $message = $message.'phone number 輸入格式不對\n';
         }
-        if(!is_numeric($_POST['ulat']) || strval($_POST['ulat'])>90.0 || strval($_POST['ulat'])<-90.0){
+        if(!empty($_POST['ulat']) && (!is_numeric($_POST['ulat']) || strval($_POST['ulat'])>90.0 || strval($_POST['ulat'])<-90.0)){
             $isException = true;
             $message = $message.'latitude 輸入格式不對\n';
         }
-        if(!is_numeric($_POST['ulon']) || strval($_POST['ulon'])>180.0 || strval($_POST['ulon'])<-180.0){
+        if(!empty($_POST['ulon']) && (!is_numeric($_POST['ulon']) || strval($_POST['ulon'])>180.0 || strval($_POST['ulon'])<-180.0)){
             $isException = true;
             $message = $message.'longitude 輸入格式不對\n';
         }

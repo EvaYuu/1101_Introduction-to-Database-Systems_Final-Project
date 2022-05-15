@@ -9,16 +9,41 @@
     $uacc = $_SESSION['Account'];
 
     try{
+        $message ='';
+        $isException = false;
         if(!isset($_POST['sname']) || !isset($_POST['scat']) || !isset($_POST['slat']) || !isset($_POST['slon'])){
             header("Location: shop.php");
             exit();
         }
-        if(empty($_POST['sname']) || empty($_POST['scat']) || empty($_POST['slat']) || empty($_POST['slon'])){
-            throw new Exception('欄位空白');
+        //欄位空白
+        if(empty($_POST['sname'])){
+            $isException = true;
+            $message = $message.'shop name 欄位空白\n';
         }
-        if(!is_numeric($_POST['slat']) || !is_numeric($_POST['slon'])
-            || ($_POST['slat'])>90.0 || ($_POST['slat'])<-90.0 || ($_POST['slon'])>180.0 || ($_POST['slon'])<-180.0){
-            throw new Exception('輸入格式不對');
+        if(empty($_POST['scat'])){
+            $isException = true;
+            $message = $message.'shop category 欄位空白\n';
+        }
+        if(empty($_POST['slat'])){
+            $isException = true;
+            $message = $message.'latitude 欄位空白\n';
+        }
+        if(empty($_POST['slon'])){
+            $isException = true;
+            $message = $message.'longitude 欄位空白\n';
+        }
+        //輸入格式不對
+        if(!empty($_POST['slat']) && (!is_numeric($_POST['slat']) || ($_POST['slat'])>90.0 || ($_POST['slat'])<-90.0)){
+            $isException = true;
+            $message = $message.'latitude 輸入格式不對\n';
+        }
+        if(!empty($_POST['slon']) && (is_numeric($_POST['slon']) || ($_POST['slon'])>180.0 || ($_POST['slon'])<-180.0)){
+            $isException = true;
+            $message = $message.'longitude 輸入格式不對\n';
+        }
+        //final
+        if($isException == true){
+            throw new Exception($message);
         }
         $sname = $_POST['sname'];
         $scat = $_POST['scat'];
