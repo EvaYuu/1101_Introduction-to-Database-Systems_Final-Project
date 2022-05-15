@@ -19,42 +19,59 @@
         //欄位空白
         if(empty($_POST['uname'])){
             $isException = true;
-            $message = $message.'name欄位空白\n';
+            $message = $message.'name 欄位空白\n';
         }
         if(empty($_POST['uphone'])){
             $isException = true;
-            $message = $message.'phone number欄位空白 ';
+            $message = $message.'phone number 欄位空白\n';
         }
         if(empty($_POST['uacc'])){
             $isException = true;
-            $message = $message.'account欄位空白 ';
+            $message = $message.'account 欄位空白\n';
         }
         if(empty($_POST['pwd'])){
             $isException = true;
-            $message = $message.'password欄位空白 ';
+            $message = $message.'password 欄位空白\n';
         }
         if(empty($_POST['re_pwd'])){
             $isException = true;
-            $message = $message.'re-type password欄位空白 ';
+            $message = $message.'re-type password 欄位空白\n';
         }
         if(empty($_POST['ulat'])){
             $isException = true;
-            $message = $message.'latitude欄位空白 ';
+            $message = $message.'latitude 欄位空白\n';
         }
         if(empty($_POST['ulon'])){
             $isException = true;
-            $message = $message.'longitude欄位空白 ';
+            $message = $message.'longitude 欄位空白\n';
         }
-
-        // if($_POST['pwd']!=$_POST['re_pwd']){
-        //     $isException = true;
-        //     throw new Exception('密碼驗證 ≠ 密碼');
-        // }
-        // if(!ctype_alnum($_POST['pwd']) || !ctype_alnum($_POST['uacc']) || !(strlen($_POST['uphone'])==10 && is_numeric($_POST['uphone']))
-        //     || !is_numeric($_POST['ulat']) || !is_numeric($_POST['ulon'])
-        //     || strval($_POST['ulat'])>90.0 || strval($_POST['ulat'])<-90.0 || strval($_POST['ulon'])>180.0 || strval($_POST['ulon'])<-180.0){
-        //     throw new Exception('輸入格式不對');
-        // }
+        //密碼驗證 ≠ 密碼
+        if($_POST['pwd']!=$_POST['re_pwd']){
+            $isException = true;
+            $message = $message.'密碼驗證 ≠ 密碼\n';
+        }
+        //輸入格式不對
+        if(!ctype_alnum($_POST['pwd'])){
+            $isException = true;
+            $message = $message.'password 輸入格式不對\n';
+        }
+        if(!ctype_alnum($_POST['uacc'])){
+            $isException = true;
+            $message = $message.'account 輸入格式不對\n';
+        }
+        if(!(strlen($_POST['uphone'])==10 && is_numeric($_POST['uphone']))){
+            $isException = true;
+            $message = $message.'phone number 輸入格式不對\n';
+        }
+        if(!is_numeric($_POST['ulat']) || strval($_POST['ulat'])>90.0 || strval($_POST['ulat'])<-90.0){
+            $isException = true;
+            $message = $message.'latitude 輸入格式不對\n';
+        }
+        if(!is_numeric($_POST['ulon']) || strval($_POST['ulon'])>180.0 || strval($_POST['ulon'])<-180.0){
+            $isException = true;
+            $message = $message.'longitude 輸入格式不對\n';
+        }
+        //final
         if($isException == true){
             throw new Exception($message);
         }
