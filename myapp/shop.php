@@ -240,11 +240,10 @@
                         $mquan = $mrow[$i]['quantity'];
                         $mimg = $mrow[$i]['image'];
                         $mimg_type = $mrow[$i]['image_type'];
-                        echo '<img src="data:'.$mimg_type.';base64,' . $mimg . '" width="100" height="100" alt="$mname"/>';
                         echo <<< EOT
                           <tr>
                           <th scope="row">$i</th>
-                          <td><img src="data:'.$mimg_type.';base64,' . $mimg . '" width="100" height="100" alt="$mname"/></td>
+                          <td><img src="data:$mimg_type;base64, $mimg"/ width="100" height="100" alt="$mname"></td>
                           <td>$mname</td>
                           <td>$mprice </td>
                           <td>$mquan </td>
