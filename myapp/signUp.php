@@ -115,7 +115,7 @@
 						<div class="form-group">
 							<label for="Account" class="sr-only">Account</label>
 							<input type="text" class="form-control" id="Account" placeholder="Account" autocomplete="off"
-							        name="uacc" oninput="check_account(this.value);"><label id="msg"></label>
+							        name="uacc" oninput="check_account(this.value);"><label style="color: red" id="msg"></label>
 						</div>
 						<div class="form-group">
 							<label for="password" class="sr-only">Password</label>
