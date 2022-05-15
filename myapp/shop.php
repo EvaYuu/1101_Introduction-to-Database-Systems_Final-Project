@@ -150,7 +150,7 @@
           <div class="row">
             <div class="col-xs-2">
               <label for="ex5">shop name</label>
-              <input name="sname" oninput="check_shopname(this.value);" class="form-control" id="ex5" placeholder="macdonald" type="text" ><label id="msg"></label>
+              <input name="sname" oninput="check_shopname(this.value);" class="form-control" id="ex5" placeholder="macdonald" type="text" ><label style="color: red" id="msg"></label>
             </div>
             <div class="col-xs-2">
               <label for="ex5">shop category</label>
@@ -345,5 +345,3 @@
 </body>
 
 </html>
-
-
