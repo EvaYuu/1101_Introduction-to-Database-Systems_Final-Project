@@ -87,7 +87,7 @@
         <h3>Profile</h3>
         <div class="row">
           <div class="col-xs-12">
-            Accouont: <label>$uname</label>, <label>$urole</label>, PhoneNumber: <label>$uphone</label>,  location: <label>$ulat</label>, <label>$ulon</label>
+            Accouont: <?php echo $uname; ?>, <?php echo $urole; ?>, PhoneNumber: <?php echo $uphone; ?>,  location: <?php echo $ulat; ?>, <?php echo $ulon; ?>
             
             <button type="button " style="margin-left: 5px;" class=" btn btn-info " data-toggle="modal"
             data-target="#location">edit location</button>
