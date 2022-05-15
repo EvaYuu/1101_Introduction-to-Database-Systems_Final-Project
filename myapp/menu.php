@@ -47,6 +47,7 @@
         $fileContents = fread($file, filesize($_FILES["mimg"]["tmp_name"]));
         fclose($file);
         $fileContents = base64_encode($fileContents);
+        $image_type = $_FILES["mimg"]["type"];
         
         
         $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
@@ -56,9 +57,9 @@
         
         if($stmt->rowCount()==0){
             
-            $stmt = $conn->prepare("insert into menus(shop_name, meal_name, price, quantity, image)
-            values(:shop_name,:meal_name, :price, :quantity, :image)");
-            $stmt->execute(array('shop_name'=>$sname, 'meal_name'=>$mname, 'price'=>$mprice, 'quantity'=>$mquan, 'image'=>$fileContents));
+            $stmt = $conn->prepare("insert into menus(shop_name, meal_name, price, quantity, image, image_type)
+            values(:shop_name,:meal_name, :price, :quantity, :image, :image_type)");
+            $stmt->execute(array('shop_name'=>$sname, 'meal_name'=>$mname, 'price'=>$mprice, 'quantity'=>$mquan, 'image'=>$fileContents, 'image_type'=>$image_type));
             
             echo <<< EOT
             <!DOCTYPE>
