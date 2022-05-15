@@ -43,7 +43,8 @@
         EOT;
     }
 
-echo <<< EOT
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -519,5 +520,4 @@ echo <<< EOT
 
 </html>
 
-EOT;
-?>
+
