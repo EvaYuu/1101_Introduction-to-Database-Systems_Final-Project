@@ -19,6 +19,11 @@
     $ulon = $row['longitude'];
     $urole = $row['role'];
 
+    $sname = '';
+    $scat = '';
+    $slat = '';
+    $slon = '';
+
     $mrowi = 0;
     $mrow = $stmt;
     $mcount = $stmt;
@@ -282,18 +287,18 @@
   <!-- Option 1: Bootstrap Bundle with Popper -->
   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> -->
   <script>
-    var urole = "$urole";
-    var sname = "$sname";
-    var scat = "$scat";
-    var slat = "$slat";
-    var slon = "$slon";
 
     $(document).ready(function () {
       $(".nav-tabs a").click(function () {
         $(this).tab('show');
       });
     });
+    var urole = '<?=$urole?>'
     if (urole == 'manager'){
+      var sname = '<?=$sname?>';
+      var scat = '<?=$scat?>';
+      var slat = '<?=$slat?>';
+      var slon = '<?=$slon?>';
       var snameField = document.getElementById('ex5');
       snameField.placeholder = sname;
       snameField.setAttribute("readOnly", 'true');

@@ -9,22 +9,54 @@
 
 
     try{
+        $message ='';
+        $isException = false;
         if(!isset($_POST['uname']) || !isset($_POST['uphone']) || !isset($_POST['uacc']) || !isset($_POST['pwd'])
             || !isset($_POST['re_pwd']) || !isset($_POST['ulat']) || !isset($_POST['ulon'])){
             header("Location: index.php");
             exit();
         }
-        if(empty($_POST['uname']) || empty($_POST['uphone']) || empty($_POST['uacc']) || empty($_POST['pwd'])
-            || empty($_POST['re_pwd']) || empty($_POST['ulat']) || empty($_POST['ulon'])){
-            throw new Exception('欄位空白');
+        //欄位空白
+        if(empty($_POST['uname'])){
+            $isException = true;
+            $message = $message.'name欄位空白 ';
         }
-        if($_POST['pwd']!=$_POST['re_pwd']){
-            throw new Exception('密碼驗證 ≠ 密碼');
+        if(empty($_POST['uphone'])){
+            $isException = true;
+            $message = $message.'phone number欄位空白 ';
         }
-        if(!ctype_alnum($_POST['pwd']) || !ctype_alnum($_POST['uacc']) || !(strlen($_POST['uphone'])==10 && is_numeric($_POST['uphone']))
-            || !is_numeric($_POST['ulat']) || !is_numeric($_POST['ulon'])
-            || strval($_POST['ulat'])>90.0 || strval($_POST['ulat'])<-90.0 || strval($_POST['ulon'])>180.0 || strval($_POST['ulon'])<-180.0){
-            throw new Exception('輸入格式不對');
+        if(empty($_POST['uacc'])){
+            $isException = true;
+            $message = $message.'account欄位空白 ';
+        }
+        if(empty($_POST['pwd'])){
+            $isException = true;
+            $message = $message.'password欄位空白 ';
+        }
+        if(empty($_POST['re_pwd'])){
+            $isException = true;
+            $message = $message.'re-type password欄位空白 ';
+        }
+        if(empty($_POST['ulat'])){
+            $isException = true;
+            $message = $message.'latitude欄位空白 ';
+        }
+        if(empty($_POST['ulon'])){
+            $isException = true;
+            $message = $message.'longitude欄位空白 ';
+        }
+
+        // if($_POST['pwd']!=$_POST['re_pwd']){
+        //     $isException = true;
+        //     throw new Exception('密碼驗證 ≠ 密碼');
+        // }
+        // if(!ctype_alnum($_POST['pwd']) || !ctype_alnum($_POST['uacc']) || !(strlen($_POST['uphone'])==10 && is_numeric($_POST['uphone']))
+        //     || !is_numeric($_POST['ulat']) || !is_numeric($_POST['ulon'])
+        //     || strval($_POST['ulat'])>90.0 || strval($_POST['ulat'])<-90.0 || strval($_POST['ulon'])>180.0 || strval($_POST['ulon'])<-180.0){
+        //     throw new Exception('輸入格式不對');
+        // }
+        if($isException == true){
+            throw new Exception($message);
         }
         $uname = $_POST['uname'];
         $uphone = $_POST['uphone'];
