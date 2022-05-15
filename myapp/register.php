@@ -19,7 +19,7 @@
         //欄位空白
         if(empty($_POST['uname'])){
             $isException = true;
-            $message = $message.'name欄位空白 ';
+            $message = $message.'name欄位空白\n';
         }
         if(empty($_POST['uphone'])){
             $isException = true;
