@@ -37,7 +37,7 @@
             $isException = true;
             $message = $message.'latitude 輸入格式不對\n';
         }
-        if(!empty($_POST['slon']) && (is_numeric($_POST['slon']) || ($_POST['slon'])>180.0 || ($_POST['slon'])<-180.0)){
+        if(!empty($_POST['slon']) && (!is_numeric($_POST['slon']) || ($_POST['slon'])>180.0 || ($_POST['slon'])<-180.0)){
             $isException = true;
             $message = $message.'longitude 輸入格式不對\n';
         }
