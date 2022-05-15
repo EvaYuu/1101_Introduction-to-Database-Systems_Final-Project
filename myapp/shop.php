@@ -41,8 +41,9 @@
       $stmt->execute(array('shop_name'=>$sname));
       $mrow = $stmt->fetchAll(PDO::FETCH_ASSOC);
       $mcount = $stmt->columnCount() - 1;
-      print_r($mrow);
-      echo $mrow[$mrowi]['meal_name'];
+      //print_r($mrow);
+      // echo $mrow[$mrowi]['meal_name'];
+      $tmp = $mrow[$mrowi]['meal_name'];
     } 
 
     try{
@@ -67,8 +68,8 @@
             </html>
         EOT;
     }
+?>
 
-echo <<< EOT
 <!doctype html>
 <html lang="en">
 
@@ -85,6 +86,37 @@ echo <<< EOT
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <title>Hello, world!</title>
+  <script>
+		function check_shopname(sname){
+			if(sname!=""){
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function(){
+					var message;
+					if(this.readyState==4 && this.status==200){
+						switch(this.responseText){
+							case 'YES':
+								message = 'The shop name is available.';
+								break;
+							case 'NO':
+								message = 'The shop name is not available.';
+								break;
+							default:
+								message = 'Oops. There is something wrong.';
+								break;
+						}
+						document.getElementById("msg").innerHTML = message;
+					}
+					
+				};
+			}
+			else{
+				document.getElementById("msg").innerHTML = '';
+			}
+			xhttp.open("POST", "check_shopname.php", true);
+			xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			xhttp.send("sname="+sname);
+		}
+	</script>
 </head>
 
 <body>
@@ -113,7 +145,7 @@ echo <<< EOT
           <div class="row">
             <div class="col-xs-2">
               <label for="ex5">shop name</label>
-              <input name="sname" class="form-control" id="ex5" placeholder="macdonald" type="text" >
+              <input name="sname" oninput="check_shopname(this.value);" class="form-control" id="ex5" placeholder="macdonald" type="text" ><label id="msg"></label>
             </div>
             <div class="col-xs-2">
               <label for="ex5">shop category</label>
@@ -190,11 +222,7 @@ echo <<< EOT
                 </tr>
               </thead>
               <tbody>
-                <?php
-                  foreach($mrow as $row){
-
-                  }
-                ?>
+                
                 <tr>
                   <th scope="row">1</th>
                   <td><img src="../Picture/1.jpg" width="100" height="100" alt="Hamburger"></td>
@@ -296,5 +324,4 @@ echo <<< EOT
 
 </html>
 
-EOT;
-?>
+
