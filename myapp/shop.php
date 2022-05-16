@@ -219,62 +219,66 @@
                 
                   <?php
                     if($urole=='manager'){
-                      $stmt = $conn->prepare("select meal_name,price,quantity,image, image_type from menus where shop_name=:shop_name");
-                      $stmt->execute(array('shop_name'=>$sname));
+                      $stmt = $conn->prepare("select meal_name,price,quantity,image, image_type from menus where shop_name='$sname'");
+                      $stmt->execute();
                       $mrow = $stmt->fetchAll(PDO::FETCH_ASSOC);
                       $mcount = $stmt->columnCount() - 1;
-                      for($i = 0;$i<$mcount;$i++){
-                        $mname = $mrow[$i]['meal_name'];
-                        $mprice = $mrow[$i]['price'];
-                        $mquan = $mrow[$i]['quantity'];
-                        $mimg = $mrow[$i]['image'];
-                        $mimg_type = $mrow[$i]['image_type'];
-                        $rowi = $i + 1;
-                        echo <<< EOT
-                          <tr>
-                          <th scope="row">$rowi</th>
-                          <td><img src="data:$mimg_type;base64, $mimg"/ width="100" height="100" alt="$mname"></td>
-                          <td>$mname</td>
-                          <td>$mprice </td>
-                          <td>$mquan </td>
-                          <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#$mname-1">
-                          Edit
-                          <form action="menu_edit.php" method="post">
-                          </button></td>
-                            <!-- Modal -->
-                            <div class="modal fade" id="$mname-1" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                              <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">$mname Edit</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <div class="row" >
-                                      <div class="col-xs-6">
-                                        <label for="ex71">price</label>
-                                        <input name ="edit_price" class="form-control" id="ex71" type="text">
-                                      </div>
-                                      <div class="col-xs-6">
-                                        <label for="ex41">quantity</label>
-                                        <input name="edit_quantity" class="form-control" id="ex41" type="text">
+                     //echo "sname". $sname;
+                     $i = 0;
+                      foreach ($mrow as $row) {;
+                          $i = $i + 1;
+                          //echo htmlentities($row['meal_name']) . ' ' . htmlentities($row['price']) . ' '.htmlentities($row['quantity']);
+                          $mname = htmlentities($row['meal_name']);
+                          $mprice = htmlentities($row['price']);
+                          $mquan = htmlentities($row['quantity']);
+                          $mimg = htmlentities($row['image']);
+                          $mimg_type = htmlentities($row['image_type']);
+                          $_SESSION['Meal_name'] = $mname;
+                          echo <<< EOT
+                            <tr>
+                            <th scope="row">$i</th>
+                            <td><img src="data:$mimg_type;base64, $mimg"/ width="100" height="100" alt="$mname"></td>
+                            <td>$mname</td>
+                            <td>$mprice </td>
+                            <td>$mquan </td>
+                            <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#$mname-1">
+                            Edit
+                            
+                            </button></td>
+                              <!-- Modal -->
+                              <div class="modal fade" id="$mname-1" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="staticBackdropLabel">$mname Edit</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <form action="menu_edit.php" method="post">
+                                    <div class="modal-body">
+                                      <div class="row" >
+                                        <div class="col-xs-6">
+                                          <label for="ex71">price</label>
+                                          <input name ="edit_price" class="form-control" id="ex71" type="text">
+                                        </div>
+                                        <div class="col-xs-6">
+                                          <label for="ex41">quantity</label>
+                                          <input name="edit_quantity" class="form-control" id="ex41" type="text">
+                                        </div>
                                       </div>
                                     </div>
-                          
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Edit</button>
+                                    <div class="modal-footer">
+                                      <button type="submit" class="btn btn-secondary" data-dismiss="modal">Edit</button>
+                                    </div>
+                                    </form>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          <td><button type="button" class="btn btn-danger">Delete</button></td>
-                          </form>
-                          </tr>
-                        EOT;
-                      }
+                            <td><button type="button" class="btn btn-danger">Delete</button></td>
+                            </tr>
+                          EOT;
+                      }                      
                     } 
                     
 
