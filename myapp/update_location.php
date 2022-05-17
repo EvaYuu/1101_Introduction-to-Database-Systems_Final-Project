@@ -17,8 +17,8 @@
     
     $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $stmt = $conn->prepare("update users set latitude=$new_ulat, longitude=$new_ulon where account='$uacc'");
-    $stmt->execute();
+    $stmt = $conn->prepare("update users set location=ST_GeomFromText(:location) where account='$uacc'");
+    $stmt->execute(array('location'=>'POINT(' . $new_ulon . ' ' . $new_ulat . '))'));
     header("Location: nav.php");
     exit();
 ?>

@@ -55,17 +55,17 @@
         $stmt->execute(array('owner'=>$uacc));
 
         if($stmt->rowCount()==0){
-            $stmt = $conn->prepare("insert into shops(owner, shop_name, shop_category, latitude, longitude)
-            values(:owner,:shop_name, :shop_category, :latitude, :longitude)");
-            $stmt->execute(array('owner'=>$uacc, 'shop_name'=>$sname, 'shop_category'=>$scat, 'latitude'=>$slat, 'longitude'=>$slon));
+            $stmt = $conn->prepare("insert into shops(owner, shop_name, shop_category, location)
+            values(:owner,:shop_name, :shop_category, ST_GeomFromText(:location))");
+            $stmt->execute(array('owner'=>$uacc, 'shop_name'=>$sname, 'shop_category'=>$scat, 'location'=>'POINT(' . $slon . ' ' . $slat . '))'));
             
             $stmt = $conn->prepare("update users set role='manager' where account='$uacc'");
             $stmt->execute();
 
             $_SESSION['Shop_name'] = $sname;
             $_SESSION['Shop_category'] = $scat;
-            $_SESSION['Shop_latitude'] = $slat;
-            $_SESSION['Shop_longitude'] = $slon;
+            // $_SESSION['Shop_latitude'] = $slat;
+            // $_SESSION['Shop_longitude'] = $slon;
 
             echo <<< EOT
             <!DOCTYPE>

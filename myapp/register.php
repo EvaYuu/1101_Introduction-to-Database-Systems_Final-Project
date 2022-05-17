@@ -89,9 +89,9 @@
         if($stmt->rowCount()==0){
             $salt = strval(rand(1000,9999));
             $hashvalue = hash('sha256', $salt.$pwd);
-            $stmt = $conn->prepare("insert into users(name, phonenumber, account, password, salt, latitude, longitude)
-            values(:name,:phonenumber, :account, :password, :salt, :latitude, :longitude)");
-            $stmt->execute(array('name'=>$uname, 'phonenumber'=>$uphone, 'account'=>$uacc, 'password'=>$hashvalue, 'salt'=>$salt, 'latitude'=>$ulat, 'longitude'=>$ulon));
+            $stmt = $conn->prepare("insert into users(name, phonenumber, account, password, salt, location)
+            values(:name,:phonenumber, :account, :password, :salt, ST_GeomFromText(:location))");
+            $stmt->execute(array('name'=>$uname, 'phonenumber'=>$uphone, 'account'=>$uacc, 'password'=>$hashvalue, 'salt'=>$salt, 'location'=>'POINT(' . $ulon . ' ' . $ulat . ')'));
             $_SESSION['Authenticated'] = true;
             $_SESSION['Name'] = $uname;
             $_SESSION['Phonenumber'] = $uphone;

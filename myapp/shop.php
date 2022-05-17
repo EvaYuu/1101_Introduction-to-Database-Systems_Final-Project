@@ -9,34 +9,53 @@
     $uacc = $_SESSION['Account']; 
     $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $stmt = $conn->prepare("select name,phonenumber,latitude,longitude,role from users where account=:account");
+    $stmt = $conn->prepare("select name,phonenumber,ST_AsText(location) as location,role from users where account=:account");
     $stmt->execute(array('account'=>$uacc));
     $row = $stmt->fetch();
 
     $uname = $row['name'];
     $uphone = $row['phonenumber'];
-    $ulat = $row['latitude']; 
-    $ulon = $row['longitude'];
+    // $ulat = $row['latitude']; 
+    // $ulon = $row['longitude'];
+    $uloc = $row['location'];
     $urole = $row['role'];
 
-    $sname = '';
-    $scat = '';
-    $slat = '';
-    $slon = '';
+    // $sname = '';
+    // $scat = '';
+    // $slat = '';
+    // $slon = '';
 
     if($urole=='manager'){
       $_SESSION['Owner'] = $uacc;
-      $stmt = $conn->prepare("select shop_name,shop_category,latitude,longitude from shops where owner=:owner");
+      $stmt = $conn->prepare("select shop_name,shop_category,ST_AsText(location) as location from shops where owner=:owner");
       $stmt->execute(array('owner'=>$uacc));
       $row = $stmt->fetch();
       $sname = $row['shop_name'];
       $scat = $row['shop_category'];
-      $slat = $row['latitude'];
-      $slon = $row['longitude'];
+      $sloc = $row['location'];
+      $slat = '';
+      $slon = '';
+      $change = false;
+      # split to $ulon & $ulat
+      foreach(str_split($sloc) as $s){
+        if(is_numeric($s)){
+          if($change){
+            $slat = $slat.$s;
+          }
+          else{
+            $slon = $slon.$s;
+          }
+        }
+        else if($s == ' '){
+         $change = true; 
+        }
+      }
+      
       $_SESSION['Shop_name'] = $sname;
       $_SESSION['Shop_category'] = $scat;
-      $_SESSION['Shop_latitude'] = $slat;
-      $_SESSION['Shop_longitude'] = $slon;
+      // $_SESSION['Shop_latitude'] = $slat;
+      // $_SESSION['Shop_longitude'] = $slon;
+
     } 
 
     try{
@@ -61,6 +80,7 @@
             </html>
         EOT;
     }
+
 ?>
 
 <!doctype html>
@@ -309,6 +329,7 @@
     if (urole == 'manager'){
       var sname = '<?=$sname?>';
       var scat = '<?=$scat?>';
+      // how to get slat & slon
       var slat = '<?=$slat?>';
       var slon = '<?=$slon?>';
       var snameField = document.getElementById('ex5');
