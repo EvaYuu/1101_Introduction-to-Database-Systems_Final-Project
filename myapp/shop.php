@@ -38,7 +38,7 @@
       $change = false;
       # split to $ulon & $ulat
       foreach(str_split($sloc) as $s){
-        if(is_numeric($s)){
+        if(is_numeric($s)|| $s == '.'){
           if($change){
             $slat = $slat.$s;
           }

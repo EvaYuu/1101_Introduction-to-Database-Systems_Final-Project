@@ -23,7 +23,7 @@
     $change = false;
     # split to $ulon & $ulat
     foreach(str_split($uloc) as $s){
-      if(is_numeric($s)){
+      if(is_numeric($s)|| $s == '.'){
         if($change){
           $ulat = $ulat.$s;
         }
@@ -103,7 +103,7 @@
         <h3>Profile</h3>
         <div class="row">
           <div class="col-xs-12">
-            Accouont: <?php echo $uname; ?>, <?php echo $urole; ?>, PhoneNumber: <?php echo $uphone; ?>,  location: <?php echo $ulon; ?>, <?php echo $ulat; ?>
+            Accouont: <?php echo $uname; ?>, <?php echo $urole; ?>, PhoneNumber: <?php echo $uphone; ?>,  location: <?php echo $ulat; ?>, <?php echo $ulon; ?>
             
             <button type="button " style="margin-left: 5px;" class=" btn btn-info " data-toggle="modal"
             data-target="#location">edit location</button>
