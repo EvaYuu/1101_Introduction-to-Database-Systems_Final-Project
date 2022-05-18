@@ -53,9 +53,6 @@
       
       $_SESSION['Shop_name'] = $sname;
       $_SESSION['Shop_category'] = $scat;
-      // $_SESSION['Shop_latitude'] = $slat;
-      // $_SESSION['Shop_longitude'] = $slon;
-
     } 
 
     try{
@@ -80,7 +77,6 @@
             </html>
         EOT;
     }
-
 ?>
 
 <!doctype html>
@@ -129,7 +125,6 @@
 			xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 			xhttp.send("sname="+sname);
 		}
-
 	</script>
 </head>
 
@@ -235,16 +230,15 @@
                   <th scope="col">Delete</th>
                 </tr>
               </thead>
-              <tbody>
-                
+              <tbody>                
                   <?php
                     if($urole=='manager'){
                       $stmt = $conn->prepare("select meal_name,price,quantity,image, image_type from menus where shop_name='$sname'");
                       $stmt->execute();
                       $mrow = $stmt->fetchAll(PDO::FETCH_ASSOC);
                       $mcount = $stmt->columnCount() - 1;
-                     //echo "sname". $sname;
-                     $i = 0;
+                      //echo "sname". $sname;
+                      $i = 0;
                       foreach ($mrow as $row) {;
                           $i = $i + 1;
                           //echo htmlentities($row['meal_name']) . ' ' . htmlentities($row['price']) . ' '.htmlentities($row['quantity']);
@@ -253,7 +247,10 @@
                           $mquan = htmlentities($row['quantity']);
                           $mimg = htmlentities($row['image']);
                           $mimg_type = htmlentities($row['image_type']);
-                          $_SESSION['Meal_name'] = $mname;
+                          $editp = 'edit_price['.$mname.']';
+                          $editq = 'edit_quantity['.$mname.']';
+
+                          // $_SESSION['Meal_name'] = $mname;
                           echo <<< EOT
                             <tr>
                             <th scope="row">$i</th>
@@ -261,10 +258,7 @@
                             <td>$mname</td>
                             <td>$mprice </td>
                             <td>$mquan </td>
-                            <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#$mname-1">
-                            Edit
-                            
-                            </button></td>
+                            <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#$mname-1">Edit</button></td>
                               <!-- Modal -->
                               <div class="modal fade" id="$mname-1" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -280,28 +274,26 @@
                                       <div class="row" >
                                         <div class="col-xs-6">
                                           <label for="ex71">price</label>
-                                          <input name ="edit_price" class="form-control" id="ex71" type="text">
+                                          <input name ="$editp" class="form-control" id="ex71" type="text">
                                         </div>
                                         <div class="col-xs-6">
                                           <label for="ex41">quantity</label>
-                                          <input name="edit_quantity" class="form-control" id="ex41" type="text">
+                                          <input name="$editq" class="form-control" id="ex41" type="text">
                                         </div>
                                       </div>
                                     </div>
                                     <div class="modal-footer">
-                                      <button type="submit" class="btn btn-secondary" data-dismiss="modal">Edit</button>
+                                      <button type="submit" class="btn btn-secondary">Edit</button>
                                     </div>
                                     </form>
                                   </div>
                                 </div>
                               </div>
-                            <td><button type="button" class="btn btn-danger">Delete</button></td>
+                            <td><button type="button" class="btn btn-danger" onclick="javascript:location.href='menu_delete.php?mname=$mname';" >Delete</button></td>
                             </tr>
                           EOT;
                       }                      
                     } 
-                    
-
                   ?>
               </tbody>
             </table>
@@ -325,7 +317,8 @@
         $(this).tab('show');
       });
     });
-    var urole = '<?=$urole?>'
+
+    var urole = '<?=$urole?>';
     if (urole == 'manager'){
       var sname = '<?=$sname?>';
       var scat = '<?=$scat?>';
