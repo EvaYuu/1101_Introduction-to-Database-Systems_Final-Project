@@ -1,63 +1,69 @@
 <?php
-    session_start();
+  session_start();
 
-    $dbservername='localhost';
-    $dbname='databasehw';
-    $dbusername='root';
-    $dbpassword='';
+  $dbservername='localhost';
+  $dbname='databasehw';
+  $dbusername='root';
+  $dbpassword='';
 
-    $uacc = $_SESSION['Account']; 
-    $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $stmt = $conn->prepare("select name,phonenumber,ST_AsText(location) as location,role from users where account=:account");
-    $stmt->execute(array('account'=>$uacc));
-    
-    $row = $stmt->fetch();
-    $uname = $row['name'];
-    $uphone = $row['phonenumber'];
-    $uloc = $row['location'];
-    $urole = $row['role'];
-    $uphone = str_pad($uphone,10,"0",STR_PAD_LEFT);
-    $ulat = '';
-    $ulon = '';
-    $change = false;
-    # split to $ulon & $ulat
-    foreach(str_split($uloc) as $s){
-      if(is_numeric($s)|| $s == '.'){
-        if($change){
-          $ulat = $ulat.$s;
-        }
-        else{
-          $ulon = $ulon.$s;
-        }
+  $uacc = $_SESSION['Account']; 
+  $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $stmt = $conn->prepare("select name,phonenumber,ST_AsText(location) as location,role from users where account=:account");
+  $stmt->execute(array('account'=>$uacc));
+  
+  $row = $stmt->fetch();
+  $uname = $row['name'];
+  $uphone = $row['phonenumber'];
+  $uloc = $row['location'];
+  $urole = $row['role'];
+  $uphone = str_pad($uphone,10,"0",STR_PAD_LEFT);
+  $ulat = '';
+  $ulon = '';
+  $change = false;
+  # split to $ulon & $ulat
+  foreach(str_split($uloc) as $s){
+    if(is_numeric($s)|| $s == '.'){
+      if($change){
+        $ulat = $ulat.$s;
       }
-      else if($s == ' '){
-       $change = true; 
+      else{
+        $ulon = $ulon.$s;
       }
     }
+    else if($s == ' '){
+      $change = true; 
+    }
+  }
+  $_SESSION['ulat'] = $ulat;
+  $_SESSION['ulon'] = $ulon;
 
-    try{
-        if(!isset($_SESSION['Authenticated'])||$_SESSION['Authenticated']!=true){
-            header("Location: index.php");
-            exit();
-        }
-    }
-    catch(Exception $e){
-        $msg = $e->getMessage();
-        session_unset();
-        session_destroy();
-        echo <<< EOT
-            <!DOCTYPE>
-            <html>
-                <body>
-                    <script>
-                    alert("Internal Error. $msg");
-                    window.location.replace("index.php");
-                    </script>
-                </body>
-            </html>
-        EOT;
-    }
+  try{
+      if(!isset($_SESSION['Authenticated'])||$_SESSION['Authenticated']!=true){
+          header("Location: index.php");
+          exit();
+      }
+  }
+  catch(Exception $e){
+      $msg = $e->getMessage();
+      session_unset();
+      session_destroy();
+      echo <<< EOT
+          <!DOCTYPE>
+          <html>
+              <body>
+                  <script>
+                  alert("Internal Error. $msg");
+                  window.location.replace("index.php");
+                  </script>
+              </body>
+          </html>
+      EOT;
+  }
+  // check correctness
+  if(isset($_SESSION['filted_result'])){//no useful
+    print_r($_SESSION['filted_result']);
+  }
 
 ?>
 
@@ -159,26 +165,22 @@
 
         </div>
 
-        <!-- 
-                
-             -->
+        <!--     -->
         <h3>Search</h3>
         <div class=" row  col-xs-8">
-          <form class="form-horizontal" action="/action_page.php">
+          <form class="form-horizontal" action="shop_filter.php" method='post'>
             <div class="form-group">
               <label class="control-label col-sm-1" for="Shop">Shop</label>
               <div class="col-sm-5">
-                <input type="text" class="form-control" placeholder="Enter Shop name">
+                <input type="text" class="form-control" placeholder="Enter Shop name" name="filter_sname">
               </div>
               <label class="control-label col-sm-1" for="distance">distance</label>
               <div class="col-sm-5">
-
-
-                <select class="form-control" id="sel1">
+                <select class="form-control" id="sel1" name="filter_distance">
+                  <option>no select</option>
                   <option>near</option>
                   <option>medium </option>
                   <option>far</option>
-
                 </select>
               </div>
 
@@ -189,39 +191,35 @@
               <label class="control-label col-sm-1" for="Price">Price</label>
               <div class="col-sm-2">
 
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" name="filter_lwprice">
 
               </div>
               <label class="control-label col-sm-1" for="~">~</label>
               <div class="col-sm-2">
 
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" name="filter_hiprice">
 
               </div>
               <label class="control-label col-sm-1" for="Meal">Meal</label>
               <div class="col-sm-5">
-                <input type="text" list="Meals" class="form-control" id="Meal" placeholder="Enter Meal">
+                <input type="text" list="Meals" class="form-control" id="Meal" placeholder="Enter Meal" name="filter_mname">
                 <datalist id="Meals">
                   <option value="Hamburger">
                   <option value="coffee">
                 </datalist>
               </div>
             </div>
-
             <div class="form-group">
-              <label class="control-label col-sm-1" for="category"> category</label>
-            
-              
+              <label class="control-label col-sm-1" for="category"> category</label>              
                 <div class="col-sm-5">
-                  <input type="text" list="categorys" class="form-control" id="category" placeholder="Enter shop category">
+                  <input type="text" list="categorys" class="form-control" id="category" placeholder="Enter shop category" name="filter_scat">
                   <datalist id="categorys">
-                    <option value="fast food">
-               
+                    <option value="fast food">               
                   </datalist>
                 </div>
-                <button type="submit" style="margin-left: 18px;"class="btn btn-primary">Search</button>
-              
+                <button type="submit" style="margin-left: 18px;"class="btn btn-primary">Search</button>  
             </div>
+            <input type="hidden" name="doSearch" value="1">
           </form>
         </div>
         <div class="row">
@@ -278,12 +276,9 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Picture</th>
-                 
-                  <th scope="col">meal name</th>
-               
+                  <th scope="col">meal name</th>               
                   <th scope="col">price</th>
-                  <th scope="col">Quantity</th>
-                
+                  <th scope="col">Quantity</th>                
                   <th scope="col">Order check</th>
                 </tr>
               </thead>
