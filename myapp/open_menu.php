@@ -92,9 +92,12 @@
                         EOT;
                     }
                 }
+                
             ?>
+            
         </tbody>
         </table>
+        <a href='nav.php' class="btn btn-default" input type='button'>Cancel</a>
     </div>
     </div>
 </div>

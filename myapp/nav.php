@@ -11,7 +11,6 @@
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $stmt = $conn->prepare("select name,phonenumber,ST_AsText(location) as location,role from users where account=:account");
   $stmt->execute(array('account'=>$uacc));
-  
   $row = $stmt->fetch();
   $uname = $row['name'];
   $uphone = $row['phonenumber'];
@@ -173,22 +172,15 @@
                   <option>far</option>
                 </select>
               </div>
-
             </div>
-
             <div class="form-group">
-
               <label class="control-label col-sm-1" for="Price">Price</label>
               <div class="col-sm-2">
-
                 <input type="text" class="form-control" name="filter_lwprice">
-
               </div>
               <label class="control-label col-sm-1" for="~">~</label>
               <div class="col-sm-2">
-
                 <input type="text" class="form-control" name="filter_hiprice">
-
               </div>
               <label class="control-label col-sm-1" for="Meal">Meal</label>
               <div class="col-sm-5">
