@@ -76,16 +76,16 @@
     }
 
     if($fdis == 'near'){
-        $conditions[] = 'distance <= ?';
+        $conditions[] = "ST_Distance_Sphere(POINT($ulon,$ulat), location) <= ?";
         $parameters[] = $a;
     }
     else if($fdis == 'medium'){
-        $conditions[] = 'distance between ? and ?';
+        $conditions[] = "ST_Distance_Sphere(POINT($ulon,$ulat), location) between ? and ?";
         $parameters[] = $a;
         $parameters[] = $b;
     }
     else if($fdis == 'far'){
-        $conditions[] = 'distance >= ?';
+        $conditions[] = "ST_Distance_Sphere(POINT($ulon,$ulat), location) >= ?";
         $parameters[] = $b;
     }
     
