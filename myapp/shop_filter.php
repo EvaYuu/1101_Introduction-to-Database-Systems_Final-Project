@@ -48,6 +48,11 @@
         $conditions[] = 'shop_category LIKE ?';
         $parameters[] = '%'.$fscat."%";
     }
+
+    if (!empty($fmname)){
+        $conditions[] = 'meal_name LIKE ?';
+        $parameters[] = '%'.$fmname."%";
+    }
     
     if(!empty($flp) && !empty($fhp)){
         if($flp > $fhp){
@@ -61,11 +66,11 @@
     }
     else{
         if(!empty($flp)){
-            $conditions[] = 'price >= $flp';
+            $conditions[] = 'price >= ?';
             $parameters[] = $flp;
         }
         else if(!empty($fhp)){
-            $conditions[] = 'price <= $fhp';
+            $conditions[] = 'price <= ?';
             $parameters[] = $fhp;
         }
     }
