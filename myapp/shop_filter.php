@@ -28,8 +28,8 @@
     $fscat = $_POST['filter_scat'];//ok
     $_SESSION['doSearch'] = $_POST['doSearch'];
 
-    $a = 100;
-    $b = 1000;
+    $a = 3000;
+    $b = 10000;
     $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
@@ -45,8 +45,8 @@
     }
     
     if (!empty($fscat)){
-        $conditions[] = 'shop_category = ?';
-        $parameters[] = $fscat;
+        $conditions[] = 'shop_category LIKE ?';
+        $parameters[] = '%'.$fscat."%";
     }
     
     if(!empty($flp) && !empty($fhp)){
@@ -85,9 +85,12 @@
     }
     
 
-    
-    // the main query
-    $sql = "select shop_name, shop_category, ST_Distance_Sphere(POINT($ulon,$ulat), location) as distance from shops natural join menus";
+    echo 'ulat = '. $ulat.'<br>';
+    echo 'ulon = '.$ulon.'<br>';
+    // the main query 
+    // use distinct shop_name to get shop_name only once
+    // ST_Distance_Sphere Returns linear distance in meters between two lon/lat points
+    $sql = "select shop_name, shop_category, ST_Distance_Sphere(POINT($ulon,$ulat), location) as distance, meal_name, price from shops natural join menus";
     
     // 把條件組合成 query 語法
     if ($conditions)
@@ -100,18 +103,21 @@
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     //距離判斷
-    foreach($result as &$srow){
-        if($srow['distance'] < $a || $srow['distance'] == $a){
-            $srow['distance'] = 'near';
-        }
-        else if($srow['distance'] < $b || $srow['distance'] == $b){
-            $srow['distance'] = 'medium';
-        }
-        else{
-            $srow['distance'] = 'far';
-        }
-    }
+    // foreach($result as &$srow){
+    //     if($srow['distance'] < $a || $srow['distance'] == $a){
+    //         $srow['distance'] = 'near';
+    //     }
+    //     else if($srow['distance'] < $b || $srow['distance'] == $b){
+    //         $srow['distance'] = 'medium';
+    //     }
+    //     else{
+    //         $srow['distance'] = 'far';
+    //     }
+    // }
     $_SESSION['filted_result'] = $result;
-    header("Location: nav.php");
-    exit();
+    print_r($result);
+
+
+    // header("Location: nav.php");
+    // exit();
 ?>
