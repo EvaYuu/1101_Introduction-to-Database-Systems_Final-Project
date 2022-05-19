@@ -241,7 +241,7 @@
                         <td>$shop_name</td>
                         <td>$shop_category</td>                
                         <td>$shop_distance </td>
-                        <td>  <button type="button" class="btn btn-info " data-toggle="modal" data-target="#$shop_name">Open menu</button></td>            
+                        <td><button type="button" class="btn btn-info " onclick="javascript:location.href='open_menu.php?shop_name=$shop_name';">Open menu</button></td>            
                       </tr>
                       EOT;
                     }
@@ -275,56 +275,3 @@
 </body>
 
 </html>
-
-
-<div class="modal-content">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">&times;</button>
-    <h4 class="modal-title">menu</h4>
-  </div>
-  <div class="modal-body">
-    <!--  -->
-
-    <div class="row">
-      <div class="  col-xs-12">
-        <table class="table" style=" margin-top: 15px;">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Picture</th>
-              <th scope="col">meal name</th>               
-              <th scope="col">price</th>
-              <th scope="col">Quantity</th>                
-              <th scope="col">Order check</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td><img src="../Picture/1.jpg" width="100" height="100" alt="Hamburger"></td>
-            
-              <td>Hamburger</td>
-            
-              <td>80 </td>
-              <td>20 </td>
-          
-              <td> <input type="checkbox" id="cbox1" value="Hamburger"></td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td><img src="../Picture/2.jpg" width="100" height="100" alt="coffee"></td>                 
-              <td>coffee</td>            
-              <td>50 </td>
-              <td>20</td>              
-              <td><input type="checkbox" id="cbox2" value="coffee"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <!--  -->
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Order</button>
-  </div>
-</div>

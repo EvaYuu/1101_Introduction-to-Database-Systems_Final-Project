@@ -236,7 +236,6 @@
                       $stmt = $conn->prepare("select meal_name,price,quantity,image, image_type from menus where shop_name='$sname'");
                       $stmt->execute();
                       $mrow = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                      $mcount = $stmt->columnCount() - 1;
                       //echo "sname". $sname;
                       $i = 0;
                       foreach ($mrow as $row) {;
