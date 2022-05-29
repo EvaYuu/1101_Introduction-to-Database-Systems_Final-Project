@@ -11,17 +11,18 @@
     $mname = $_GET['mname'];
 
     try{
+        echo "$mname";
         if($mname==''){
             throw new Exception('Something error');
         }
         $mname = $_GET['mname'];
-        $stmt = $conn->prepare("delete from menus where shop_name='$sname' and meal_name='$mname'");
-        $stmt->execute();
-        throw new Exception('DELETE SUCCESS');
+        $stmt = $conn->prepare("delete from menus where shop_name=:sname and meal_name=:mname");
+        $stmt->execute(array('sname'=>$sname, 'mname'=>$mname));
+        //throw new Exception('DELETE SUCCESS');
+        //exit();
     }
     catch(Exception $e){
         $msg = $e->getMessage();
-
         echo <<< EOT
             <!DOCTYPE>
             <html>
@@ -33,5 +34,6 @@
                 </body>
             </html>
         EOT;
+
     }
 ?>

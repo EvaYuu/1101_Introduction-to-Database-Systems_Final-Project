@@ -8,6 +8,8 @@
     $dbpassword='';
 
     try{
+        $message ='';
+        $isException = false;
         if(empty($_SESSION['Shop_name'])){
             echo <<< EOT
             <!DOCTYPE>
@@ -26,29 +28,48 @@
             header("Location: shop.php");
             exit();
         }
-        if(empty($_POST['mname']) || empty($_POST['mprice']) || empty($_POST['mquan'])){
-            throw new Exception('欄位空白');
+        // 欄位空白
+        if(empty($_POST['mname'])){
+            $isException = true;
+            $message = $message.'meal name 欄位空白\n';
         }
-        if(!(floor($_POST['mprice'])==$_POST['mprice']) || !(floor($_POST['mquan'])==$_POST['mquan']) 
-            || ($_POST['mprice'])<0 || ($_POST['mquan'])<0){
-            throw new Exception('輸入格式不對');
+        if(empty($_POST['mprice']) && $_POST['mprice'] != 0){
+            $isException = true;
+            $message = $message.'price 欄位空白\n';
+        }
+        if(empty($_POST['mquan']) && $_POST['mquan'] != 0){
+            $isException = true;
+            $message = $message.'quantity 欄位空白\n';
+        }
+        // 輸入格式
+        if(!empty($_POST['mprice']) && (!is_numeric($_POST['mprice']) || strval($_POST['mprice']) < 0)){
+            $isException = true;
+            $message = $message.'price 輸入格式錯誤\n';
+        }
+        if(!empty($_POST['mprice']) && (!is_numeric($_POST['mquan']) || strval($_POST['mquan']) < 0)){
+            $isException = true;
+            $message = $message.'quantity 輸入格式錯誤\n';
         }
         $sname = $_SESSION['Shop_name'];
         $mname = $_POST['mname'];
         $mprice = $_POST['mprice'];
         $mquan = $_POST['mquan'];
-        //$mimg = $_POST['mimg']; 
 
         if($_FILES['mimg']['error']!=0){
-            throw new Exception('上傳錯誤');
+            $isException = true;
+            $message = $message.'image 上傳錯誤\n';
+        }
+
+        //final
+        if($isException == true){
+            throw new Exception($message);
         }
         
         $file = fopen($_FILES["mimg"]["tmp_name"], "rb");
         $fileContents = fread($file, filesize($_FILES["mimg"]["tmp_name"]));
         fclose($file);
         $fileContents = base64_encode($fileContents);
-        $image_type = $_FILES["mimg"]["type"];
-        
+        $image_type = $_FILES["mimg"]["type"];  
         
         $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -87,7 +108,7 @@
                 <body>
                     <script>
                     alert("$msg");
-                    window.location.replace("menu.php");
+                    window.location.replace("shop.php");
                     </script>
                 </body>
             </html>

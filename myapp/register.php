@@ -37,11 +37,11 @@
             $isException = true;
             $message = $message.'re-type password 欄位空白\n';
         }
-        if(empty($_POST['ulat'])){
+        if(empty($_POST['ulat']) && $_POST['ulat'] != 0){
             $isException = true;
             $message = $message.'latitude 欄位空白\n';
         }
-        if(empty($_POST['ulon'])){
+        if(empty($_POST['ulon']) && $_POST['ulat'] != 0){
             $isException = true;
             $message = $message.'longitude 欄位空白\n';
         }

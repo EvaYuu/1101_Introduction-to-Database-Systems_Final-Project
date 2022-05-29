@@ -22,7 +22,7 @@
   $change = false;
   # split to $ulon & $ulat
   foreach(str_split($uloc) as $s){
-    if(is_numeric($s)|| $s == '.'){
+    if(is_numeric($s) || $s == '.' || $s == '-'){
       if($change){
         $ulat = $ulat.$s;
       }
