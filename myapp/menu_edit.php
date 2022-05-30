@@ -40,7 +40,7 @@
                 else{
                     $stmt = $conn->prepare("update menus set quantity=:quantity where shop_name='$sname' and meal_name='$k'");
                     $stmt->execute(array('quantity'=>$v));
-                    $message = $message."quantity 修改成功\n";
+                    $message = $message.'quantity 修改成功\n';
                 }
             }
         }
