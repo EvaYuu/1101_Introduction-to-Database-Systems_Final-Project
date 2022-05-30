@@ -8,18 +8,23 @@
     $sname = $_SESSION['Shop_name'];
     $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $mname = $_GET['mname'];
 
     try{
-        echo "$mname";
-        if($mname==''){
+        if(!isset($_GET['mrow'])){
             throw new Exception('Something error');
         }
-        $mname = $_GET['mname'];
-        $stmt = $conn->prepare("delete from menus where shop_name=:sname and meal_name=:mname");
-        $stmt->execute(array('sname'=>$sname, 'mname'=>$mname));
-        //throw new Exception('DELETE SUCCESS');
-        //exit();
+        $mri = $_GET['mrow'];
+        $mri -= 1;
+        // echo "mri = $mri";
+        $stmt = $conn->prepare("select shop_name, meal_name from menus where shop_name='$sname'");
+        $stmt->execute();
+        $mrow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $mname = $mrow[$mri]['meal_name'];
+        $stmt = $conn->prepare("delete from menus where shop_name='$sname' and meal_name='$mname'");
+        $stmt->execute();
+        throw new Exception('DELETE SUCCESS');
+        exit();
     }
     catch(Exception $e){
         $msg = $e->getMessage();

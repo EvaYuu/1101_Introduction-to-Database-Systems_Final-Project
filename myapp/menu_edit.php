@@ -11,7 +11,7 @@
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     try{
-        $message ='';
+        $message = '';
         $nullsubmit = 1;
         if(!isset($_POST['edit_price']) || !isset($_POST['edit_quantity'])){
             echo 'wrong here<br>';
@@ -25,8 +25,8 @@
                     $message = $message.'edit price 輸入格式錯誤\n';
                 }
                 else{
-                    $stmt = $conn->prepare("update menus set price=:price where shop_name=:sname and meal_name=:mname");
-                    $stmt->execute(array('price'=>$v, 'sname'=>$sname, 'mname'=>$mname));
+                    $stmt = $conn->prepare("update menus set price=:price where shop_name='$sname' and meal_name='$k'");
+                    $stmt->execute(array('price'=>$v));
                     $message = $message.'price 修改成功\n';
                 }
             }
@@ -38,9 +38,9 @@
                     $message = $message.'edit quantity 輸入格式錯誤\n';
                 }
                 else{
-                    $stmt = $conn->prepare("update menus set quantity=:quantity where shop_name=:sname and meal_name=:mname");
-                    $stmt->execute(array('quantity'=>$v, 'sname'=>$sname, 'mname'=>$mname));
-                    $message = $message.'quantity 修改成功\n';
+                    $stmt = $conn->prepare("update menus set quantity=:quantity where shop_name='$sname' and meal_name='$k'");
+                    $stmt->execute(array('quantity'=>$v));
+                    $message = $message."quantity 修改成功\n";
                 }
             }
         }
@@ -48,6 +48,7 @@
             throw new Exception('欄位空白');
         }
         else{
+            
             echo <<< EOT
             <!DOCTYPE>
             <html>
@@ -75,5 +76,6 @@
                 </body>
             </html>
         EOT;
+        exit();
     }
 ?>

@@ -248,6 +248,7 @@
                           $mimg_type = htmlentities($row['image_type']);
                           $editp = 'edit_price['.$mname.']';
                           $editq = 'edit_quantity['.$mname.']';
+                          // echo "$mname $mprice $mquan";
 
                           // $_SESSION['Meal_name'] = $mname;
                           echo <<< EOT
@@ -257,9 +258,9 @@
                             <td>$mname</td>
                             <td>$mprice </td>
                             <td>$mquan </td>
-                            <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#$mname-1">Edit</button></td>
+                            <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#$i-1">Edit</button></td>
                               <!-- Modal -->
-                              <div class="modal fade" id="$mname-1" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                              <div class="modal fade" id="$i-1" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                   <div class="modal-content">
                                     <div class="modal-header">
@@ -288,7 +289,7 @@
                                   </div>
                                 </div>
                               </div>
-                            <td><button type="button" class="btn btn-danger" onclick="javascript:location.href='menu_delete.php?mname=$mname';" >Delete</button></td>
+                            <td><button type="button" class="btn btn-danger" onclick="javascript:location.href='menu_delete.php?mrow=$i';" >Delete</button></td>
                             </tr>
                           EOT;
                       }                      
