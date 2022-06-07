@@ -51,8 +51,23 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <title>Hello, world!</title>
+  <script>
+      function insc(index){
+          var count_name = "count_" + index;
+          var count=document.getElementById(count_name).innerHTML;
+          document.getElementById(count_name).innerHTML=parseInt(count)+1;
+      }
+      function dec(index){
+          var count_name = "count_" + index;
+          var count=document.getElementById(count_name).innerHTML;
+          if(count != 0){
+            document.getElementById(count_name).innerHTML=parseInt(count)-1;
+          } 
+      }
+  </script>
 </head>
 <body>
+<div class="container">
 <h4 class="modal-title">menu</h4>
 <div class="row">
 <div class=" row  col-xs-8">
@@ -66,7 +81,7 @@
             <th scope="col">meal name</th>               
             <th scope="col">price</th>
             <th scope="col">Quantity</th>                
-            <th scope="col">Order check</th>
+            <th scope="col">Order</th>
             </tr>
         </thead>
         <tbody>
@@ -87,7 +102,11 @@
                             <td>$mname</td>
                             <td>$price </td>
                             <td>$qan </td>    
-                            <td> <input type="checkbox" id="cbox1" value="$mname"></td>
+                            <td>
+                            <button type="button" class="btn btn-light btn-sm " onclick="dec($index)">-</button>
+                            <button type="button" class="btn btn-sm" id="count_$index">0</button>
+                            <button type="button" class="btn btn-light btn-sm " onclick="insc($index)">+</button>
+                            </td>
                             </tr>
                         EOT;
                     }
@@ -95,11 +114,32 @@
                 
             ?>
             
+            <tr>
+            <td></td>
+            <td>
+            <form class="form-horizontal" action="" method='post'>
+            <label class="control-label col-sm-2" for="Meal">Type</label>
+            <div class="col-sm-6">
+            <input type="text" list="Meals" class="form-control" id="Meal" placeholder="Delivery" name="filter_mname">
+            <datalist id="Meals">
+                <option value="Delivery">
+                <option value="Pick-up">
+            </datalist>
+            </div></td>
+            </form>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td>
+                <div align="right"><td>
+                <a href='nav.php' class="btn btn-default" input type='button'>Cancel</a>
+                </div></td>
+            </tr>
         </tbody>
         </table>
-        <a href='nav.php' class="btn btn-default" input type='button'>Cancel</a>
+        
     </div>
     </div>
+</div>
 </div>
 </div>
       
