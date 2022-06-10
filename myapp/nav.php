@@ -36,6 +36,9 @@
   }
   $_SESSION['ulat'] = $ulat;
   $_SESSION['ulon'] = $ulon;
+  if(isset($_SESSION['order_shop'])){
+    unset($_SESSION['order_shop']);
+  }
 
   try{
       if(!isset($_SESSION['Authenticated'])||$_SESSION['Authenticated']!=true){
