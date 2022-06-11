@@ -38,6 +38,9 @@
   $_SESSION['ulat'] = $ulat;
   $_SESSION['ulon'] = $ulon;
   $_SESSION['uwal'] = $uwal;
+  if(isset($_SESSION['order_shop'])){
+    unset($_SESSION['order_shop']);
+  }
 
   try{
       if(!isset($_SESSION['Authenticated'])||$_SESSION['Authenticated']!=true){
@@ -241,7 +244,7 @@
                         <td>$shop_name</td>
                         <td>$shop_category</td>                
                         <td>$shop_distance </td>
-                        <td><button type="button" class="btn btn-info " onclick="javascript:location.href='open_menu.php?shop_name=$shop_name';">Open menu</button></td>            
+                        <td><button type="button" class="btn btn-info " onclick="javascript:location.href='open_menu.php?order_shop=$shop_name';">Open menu</button></td>            
                       </tr>
                       EOT;
                     }

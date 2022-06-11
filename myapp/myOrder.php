@@ -76,7 +76,7 @@
 
           <form class="form-horizontal" action="myOrder_filter.php" method='post'>
             <div class="form-group"><br>
-              <label class="control-label col-sm-1" for="action">Status</label>
+              <label class="control-label col-sm-1" for="action">Action</label>
               <div class="col-sm-5">
                 <select class="form-control" id="filter" name="filter_action" onchange="this.form.submit()">
                   <option>-- Select --</option>

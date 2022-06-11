@@ -5,6 +5,8 @@
     $dbusername='root';
     $dbpassword='';
 
+    $ulon = $_SESSION['ulon'];
+    $ulat = $_SESSION['ulat'];
     $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sname = $_POST['order_shop'];
@@ -14,7 +16,7 @@
     // echo 'Delivery = '."$Delivery";
     // print_r($order_meal);
     $_SESSION['order_shop'] = $sname;
-
+    
     try{
         if($sname==''){
             throw new Exception('Something error');
@@ -131,7 +133,15 @@
                     }
                 }
                 if($Delivery == "Delivery"){
-                    $Del_fee = 19;
+                    $sql = "select shop_name, ST_Distance_Sphere(POINT($ulon,$ulat), location) as distance from shops where shop_name='$sname'";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->execute();
+                    $shop_distance = $stmt->fetch()['distance'];
+                    // echo 'shop_distance = '.$shop_distance;
+                    $Del_fee = round($shop_distance/100);   // meter distance, fee = 10 times km distance
+                    if($Del_fee < 10){  // minimum delivery fee is $10
+                        $Del_fee = 10;
+                    }
                     $total_price = $subtotal + $Del_fee;
                     $Del_fee = htmlentities($Del_fee);
                 }
@@ -151,11 +161,11 @@
                             $mname = htmlentities($mname);
                             if($Delivery == "Delivery"){
                                 echo <<< EOT
-                                    Delivery    $$Del_fee</br>
+                                    Delivery fee    $$Del_fee</br>
                                 EOT;
                             } 
                         ?>
-                        Total Price     $<?php echo $subtotal; ?></br>
+                        Total Price     $<?php echo $total_price; ?></br>
                         <form action="order_transaction.php" method="POST">
                             <input type="hidden" name="shopName" value=$sname>
                             <input type="hidden" name="totalPrice" value=$total_price>

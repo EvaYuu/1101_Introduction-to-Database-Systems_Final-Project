@@ -42,7 +42,7 @@
                 <body>
                     <script>
                     alert("$msg");
-                    window.location.replace("nav.php");
+                  
                     </script>
                 </body>
             </html>
