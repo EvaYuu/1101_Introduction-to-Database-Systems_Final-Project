@@ -156,7 +156,12 @@
                             } 
                         ?>
                         Total Price     $<?php echo $subtotal; ?></br>
-                        <a href='nav.php' class="btn btn-default" input type='button'>Order</a>
+                        <form action="order_transaction.php" method="POST">
+                            <input type="hidden" name="shopName" value=$sname>
+                            <input type="hidden" name="totalPrice" value=$total_price>
+                            <button type="submit" class="btn btn-primary">Order</button>  
+                        </form>
+                        <!--<a href='nav.php' class="btn btn-default" input type='button'>Order</a>-->
                     </div>
                 </td>
             </tr>
