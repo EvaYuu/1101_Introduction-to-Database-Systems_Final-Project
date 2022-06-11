@@ -110,9 +110,10 @@
                       if(isset($_SESSION['filter_result'])){
                         $mrow = $_SESSION['filter_result'];
 
-                        $i = 0;
+                        //$i = 0;
                         foreach ($mrow as $row) {
-                            $i = $i + 1;
+                            //$i = $i + 1;
+                            $record_id = htmlentities($row['record_id']);
                             $action = htmlentities($row['action']);
                             $time = htmlentities($row['time']);
                             $trader = htmlentities($row['trader']);
@@ -122,7 +123,7 @@
                             
                             echo <<< EOT
                                 <tr>
-                                <th scope="row">$i</th>
+                                <th scope="row">$record_id</th>
                                 <td>$action</td>
                                 <td>$time</td>
                                 <td>$trader</td>
