@@ -101,7 +101,7 @@
                 <tr>
                   <th scope="col">Record ID</th>
                   <th scope="col">Action</th>
-                  <th scope="col">Time</th>
+                  <th width="80%" scope="col">Time</th>
                   <th scope="col">Trader</th>
                   <th scope="col">Amount change</th>
                 </tr>
@@ -121,6 +121,8 @@
                           $time = htmlentities($row['time']);
                           $trader = htmlentities($row['trader']);
                           $amount_change = htmlentities($row['amount_change']);
+                          //force to show the sign
+                          $amount_change = sprintf('%+d', $amount_change);
                           
                           echo <<< EOT
                             <tr>
