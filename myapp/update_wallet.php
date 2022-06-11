@@ -45,7 +45,7 @@
         <html>
             <body>
                 <script>
-                alert("wallet balance update success!!");
+                alert("儲值成功");
                 window.location.replace("nav.php");
                 </script>
             </body>
