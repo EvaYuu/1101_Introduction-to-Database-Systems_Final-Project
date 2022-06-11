@@ -7,7 +7,7 @@
 
     $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sname = $_POST['shop_name'];
+    $sname = $_POST['order_shop'];
     $Delivery = $_POST['Delivery'];
     $order_meal = $_POST['order_meal'];
     // echo 'shop name = '."$sname";
@@ -23,19 +23,28 @@
         $stmt->execute();
         $mrows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $hasorder = False;
-        if(isset($mrows)){
-            foreach($mrows as $r){
-                $mname = $r['meal_name'];
-                if($order_meal["$mname"]!=0){
-                    $hasorder = True;
-                }
+        // check meal exists and compute total price
+        $subtotal = 0;
+        foreach($order_meal as $k => $v){
+            $stmt = $conn->prepare("select meal_name, price, quantity, image, image_type from menus where shop_name='$sname' and meal_name='$k'");
+            $stmt->execute();
+            $meal = $stmt->fetch();
+            if($stmt->rowCount()==0){// meal dosen't exist in database
+                throw new Exception('Some of the meals have been deleted. ');
+            }
+            if($v!=0){
+                $hasorder = True;
+                $subtotal += $meal['price'] * $v;
             }
         }
         if(!$hasorder){
+            unset($_SESSION['order_meal']);
             throw new Exception('Have not ordered anything.');
         }
         $_SESSION['order_meal'] = $order_meal;//store ordered meals to session([meal name]->count)
         // print_r($order_meal);
+
+    
     }
     catch(Exception $e){
         $msg = $e->getMessage();
@@ -72,18 +81,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <title>Hello, world!</title>
   <script>
-      function insc(index){
-          var count_name = "count_" + index;
-          var count=document.getElementById(count_name).innerHTML;
-          document.getElementById(count_name).innerHTML=parseInt(count)+1;
-      }
-      function dec(index){
-          var count_name = "count_" + index;
-          var count=document.getElementById(count_name).innerHTML;
-          if(count != 0){
-            document.getElementById(count_name).innerHTML=parseInt(count)-1;
-          } 
-      }
+
   </script>
 </head>
 <body>
@@ -124,21 +122,40 @@
                                 <td><img src="data:$mimg_type;base64, $mimg" width="100" height="100" alt="$mname"></td>
                                 <td>$mname</td>
                                 <td>$price </td>
-                                <td>$count</td>    
+                                <td>$count</td>
+                                <input type="hidden" name='order_meal[$mname]' value=$count>    
                                 <td></td>
                                 </tr>
                             EOT;
                         }
                     }
                 }
+                if($Delivery == "Delivery"){
+                    $Del_fee = 19;
+                    $total_price = $subtotal + $Del_fee;
+                    $Del_fee = htmlentities($Del_fee);
+                }
+                else{
+                    $total_price = $subtotal;
+                }
                 
+                $subtotal = htmlentities($subtotal);
+                $total_price = htmlentities($total_price);
             ?>
             <tr>
                 <td></td><td></td><td></td><td></td><td></td>
                 <td>
                     <div align="right">
-                        Subtotal    $200</br>
-                        Total Price     $300</br>
+                        Subtotal    $<?php echo $subtotal; ?></br>
+                        <?php 
+                            $mname = htmlentities($mname);
+                            if($Delivery == "Delivery"){
+                                echo <<< EOT
+                                    Delivery    $$Del_fee</br>
+                                EOT;
+                            } 
+                        ?>
+                        Total Price     $<?php echo $subtotal; ?></br>
                         <a href='nav.php' class="btn btn-default" input type='button'>Order</a>
                     </div>
                 </td>

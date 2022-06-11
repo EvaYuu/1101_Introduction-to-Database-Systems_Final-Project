@@ -9,15 +9,21 @@
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     if(isset($_SESSION['order_shop'])){//close window from preview_order
         $sname = $_SESSION['order_shop'];
-        $hasorder = 1;
-        print_r($_SESSION['order_meal']);
+        if(!isset($_SESSION['order_meal'])){//something wrong with ordered meals, unset session
+            $hasorder = 0;
+        }
+        else{
+            $hasorder = 1;
+            print_r($_SESSION['order_meal']);
+        }
+        
     }
     else{//from home click open menu
-        $sname = $_GET['shop_name'];
+        $sname = $_GET['order_shop'];
         unset($_SESSION['order_meal']);
         $hasorder = 0;
     }
-    
+    // echo 'type = '.gettype($_SESSION['order_meal']);//array
 
     try{
         if($sname==''){
@@ -62,6 +68,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>Hello, world!</title>
     <script>
+
         function insc(index){
             var count_name = "count_" + index;
             var order_count = "order_count_" + index;
@@ -78,9 +85,10 @@
             } 
             document.getElementById(order_count).value = document.getElementById(count_name).innerHTML;
         }
+        
         var hasorder = <?php echo $hasorder; ?>;
         if(hasorder==1){
-            
+            //should make place the ordered list, need bug fixed.
         }
 
     </script>
@@ -155,7 +163,7 @@
                 <td></td><td></td><td></td><td></td><td></td>
                 <td>
                     <div align="right">
-                        <input type="hidden" name="shop_name" value="<?php echo $sname; ?>">
+                        <input type="hidden" name="order_shop" value="<?php echo $sname; ?>">
                         <button type='submit' class="btn btn-default">Calculate the price</button>
                     </div>
                 </td>
