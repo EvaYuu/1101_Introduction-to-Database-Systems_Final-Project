@@ -138,13 +138,13 @@
     </div>
   </nav>
   <div class="container">
-
     <ul class="nav nav-tabs">
       <li><a href="nav.php">Home</a></li>
-      <li class="active"><a href="shop.php">shop</a></li>
-      <li><a href="logout.php">Log out</a></li>
-
-
+      <li class="active"><a href="shop.php">Shop</a></li>
+      <li><a href="myOrder.php">MyOrder</a></li>
+      <li><a href="shopOrder.php">Shop Order</a></li>
+      <li><a href="transactionRecord.php">Transaction Record</a></li>
+      <li><a href="Logout.php">Log out</a></li>
     </ul>
 
     <div class="tab-content">
