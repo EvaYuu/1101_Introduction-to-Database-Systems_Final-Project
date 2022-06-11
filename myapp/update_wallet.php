@@ -37,8 +37,12 @@
         
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->beginTransaction();
+        //update users
         $stmt = $conn->prepare("update users set walletbalance = (:original)+(:add_value) where account=:account");
         $stmt->execute(array('original'=>$uwal, 'add_value'=>$add_value, 'account'=>$uacc));
+        //update tansactions
+        $stmt = $conn->prepare("insert into transactions(account, action, trader, amount_change) values(:account, 'Recharge', :trader, :amount_change)");
+        $stmt->execute(array('account'=>$uacc, 'trader'=>$uacc, 'amount_change'=>$add_value));
         $conn->commit();
         echo <<< EOT
         <!DOCTYPE>
