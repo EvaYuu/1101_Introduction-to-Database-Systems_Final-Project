@@ -48,12 +48,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <title>Hello, world!</title>
-  <script>
-        function transaction_filter() {
-            var x = document.getElementById("filter").value;
-            document.getElementById("demo").innerHTML = "You selected: " + x;
-        }
-	</script>
+
 </head>
 
 <body>
@@ -78,19 +73,22 @@
 
     <div class="tab-content">
         <div class=" row  col-xs-8">
+
           <form class="form-horizontal" action="transaction_filter.php" method='post'>
             <div class="form-group"><br>
               <label class="control-label col-sm-1" for="action">Action</label>
               <div class="col-sm-5">
-                <select class="form-control" id="filter" name="filter_action" onchange="transaction_filter()">
+                <select class="form-control" id="filter" name="filter_action" onchange="this.form.submit()">
+                  <option>-- Select --</option>
                   <option>All</option>
                   <option>Payment</option>
                   <option>Receive</option>
                   <option>Recharge</option>
                 </select>
+                
               </div>
-            
           </form>
+
         </div>
 
         <!---------------------------分隔線------------------------------>
@@ -108,31 +106,30 @@
               </thead>
               <tbody>                
                   <?php
-                      $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
-                      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                      $stmt = $conn->prepare("select * from transactions where account=:account");
-                      $stmt->execute(array('account'=>$uacc));
-                      $mrow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                     
+                      if(isset($_SESSION['filter_result'])){
+                        $mrow = $_SESSION['filter_result'];
 
-                      $i = 0;
-                      foreach ($mrow as $row) {;
-                          $i = $i + 1;
-                          $action = htmlentities($row['action']);
-                          $time = htmlentities($row['time']);
-                          $trader = htmlentities($row['trader']);
-                          $amount_change = htmlentities($row['amount_change']);
-                          //force to show the sign
-                          $amount_change = sprintf('%+d', $amount_change);
-                          
-                          echo <<< EOT
-                            <tr>
-                            <th scope="row">$i</th>
-                            <td>$action</td>
-                            <td>$time</td>
-                            <td>$trader</td>
-                            <td>$amount_change</td>
-                            </tr>
-                          EOT;
+                        $i = 0;
+                        foreach ($mrow as $row) {
+                            $i = $i + 1;
+                            $action = htmlentities($row['action']);
+                            $time = htmlentities($row['time']);
+                            $trader = htmlentities($row['trader']);
+                            $amount_change = htmlentities($row['amount_change']);
+                            //force to show the sign
+                            $amount_change = sprintf('%+d', $amount_change);
+                            
+                            echo <<< EOT
+                                <tr>
+                                <th scope="row">$i</th>
+                                <td>$action</td>
+                                <td>$time</td>
+                                <td>$trader</td>
+                                <td>$amount_change</td>
+                                </tr>
+                            EOT;
+                        }
                       }                      
                   ?>
               </tbody>
