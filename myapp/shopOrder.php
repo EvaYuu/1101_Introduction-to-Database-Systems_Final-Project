@@ -137,7 +137,7 @@
                               <td><button type="button" class="btn btn-info" onclick="javascript:location.href='order_detail.php?OID=$OID';">order details</button></td>
                           EOT;
                           
-                          if($status=='Not finished'){
+                          if($status=='Not Finished'){
                             echo <<< EOT
                               <td>
                               <button type="button" class="btn btn-success" onclick="javascript:location.href='done.php?OID=$OID';">Done</button>

@@ -29,7 +29,7 @@
         $seller = $row['owner']; 
 
         $conn->beginTransaction();
-        //update order status (Not finished->Cancel)
+        //update order status (Not Finished->Cancel)
         $stmt = $conn->prepare("update orders set status='Cancel' where OID:=OID");
         $stmt->execute(array('OID'=>$OID));
         //refund
