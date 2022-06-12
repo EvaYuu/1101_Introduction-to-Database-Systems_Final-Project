@@ -28,13 +28,13 @@
         // check meal exists and compute total price
         $subtotal = 0;
         foreach($order_meal as $k => $v){
-            $stmt = $conn->prepare("select meal_name, price, quantity, image, image_type from menus where shop_name='$sname' and meal_name='$k'");
-            $stmt->execute();
-            $meal = $stmt->fetch();
-            if($stmt->rowCount()==0){// meal dosen't exist in database
-                throw new Exception('Some of the meals have been deleted. ');
-            }
             if($v!=0){
+                $stmt = $conn->prepare("select meal_name, price, quantity, image, image_type from menus where shop_name='$sname' and meal_name='$k'");
+                $stmt->execute();
+                $meal = $stmt->fetch();
+                if($stmt->rowCount()==0){// meal dosen't exist in database
+                    throw new Exception('Some of the meals have been deleted. ');
+                }
                 $hasorder = True;
                 $subtotal += $meal['price'] * $v;
             }
@@ -107,7 +107,7 @@
             </tr>
         </thead>
         <tbody>
-            <form class="form" action="" method='post'>
+            <form class="form" action="order_build.php" method='post'>
             <?php 
                 if(!empty($mrows)){
                     foreach($mrows as $r){
@@ -132,6 +132,8 @@
                         }
                     }
                 }
+                $Del_fee = 0;
+                $shop_distance = 0;
                 if($Delivery == "Delivery"){
                     $sql = "select shop_name, ST_Distance_Sphere(POINT($ulon,$ulat), location) as distance from shops where shop_name='$sname'";
                     $stmt = $conn->prepare($sql);
@@ -166,11 +168,12 @@
                             } 
                         ?>
                         Total Price     $<?php echo $total_price; ?></br>
-                        <form action="order_transaction.php" method="POST">
-                            <input type="hidden" name="shopName" value=$sname>
-                            <input type="hidden" name="totalPrice" value=$total_price>
-                            <button type="submit" class="btn btn-primary">Order</button>  
-                        </form>
+                        <input type="hidden" name="shopName" value="<?php echo $sname; ?>">
+                        <input type="hidden" name="Delivery_type" value="<?php echo $Delivery; ?>">
+                        <input type="hidden" name="Delivery_fee" value="<?php echo $Del_fee;?>">
+                        <input type="hidden" name="Delivery_distance" value="<?php echo $shop_distance;?>">
+                        <button type="submit" class="btn btn-primary">Order</button>  
+            
                         <!--<a href='nav.php' class="btn btn-default" input type='button'>Order</a>-->
                     </div>
                 </td>
