@@ -76,9 +76,9 @@
 
           <form class="form-horizontal" action="myOrder_filter.php" method='post'>
             <div class="form-group"><br>
-              <label class="control-label col-sm-1" for="action">Status</label>
+              <label class="control-label col-sm-1" for="status">Status</label>
               <div class="col-sm-5">
-                <select class="form-control" id="filter" name="filter_action" onchange="this.form.submit()">
+                <select class="form-control" id="filter" name="filter_status" onchange="this.form.submit()">
                   <option>-- Select --</option>
                   <option>All</option>
                   <option>Finished</option>
@@ -110,7 +110,43 @@
               <tbody>                
                   <?php
                       //TODO: filtered information    
-                      
+                      if(isset($_SESSION['filter_result_myOrder'])){
+                        $mrow = $_SESSION['filter_result_myOrder'];
+
+                        foreach ($mrow as $row) {
+                            $order_id = htmlentities($row['order_id']);
+                            $status = htmlentities($row['status']);
+                            $start = htmlentities($row['start']);
+                            $end = htmlentities($row['end']);
+                            $shop_name = htmlentities($row['shop_name']);
+                            $total_price = htmlentities($row['total_price']);
+                            
+                            echo <<< EOT
+                                <tr>
+                                <th scope="row">$order_id</th>
+                                <td>$status</td>
+                                <td>$start</td>
+                                <td>$end</td>
+                                <td>$shop_name</td>
+                                <td>$total_price</td>
+                                <td><button type="button" class="btn btn-info" onclick="javascript:location.href='order_detail.php?order_id=$order_id';">order details</button></td>
+                                
+                            EOT;
+                            if($status=='Not finished'){
+                              echo <<< EOT
+                                <td><button type="button" class="btn btn-danger" onclick="javascript:location.href='cancel.php?order_id=$order_id';">Cancel</button></td>
+                                </tr>
+                              EOT;
+                            }
+                            else{
+                              echo <<< EOT
+                                <td> </td>
+                                </tr>
+                              EOT;
+                            }
+                            
+                        }
+                      }                      
                       
                   ?>
               </tbody>
