@@ -27,11 +27,11 @@
             $message = $message.'longitude 欄位空白\n';
         }
         //輸入格式不對
-        if(!empty($_POST['ulat']) && (!is_numeric($_POST['ulat']) || strval($_POST['ulat'])>90.0 || strval($_POST['ulat'])<-90.0)){
+        if(!empty($_POST['new_ulat']) && (!is_numeric($_POST['new_ulat']) || strval($_POST['new_ulat'])>90.0 || strval($_POST['new_ulat'])<-90.0)){
             $isException = true;
             $message = $message.'latitude 輸入格式不對\n';
         }
-        if(!empty($_POST['ulon']) && (!is_numeric($_POST['ulon']) || strval($_POST['ulon'])>180.0 || strval($_POST['ulon'])<-180.0)){
+        if(!empty($_POST['new_ulon']) && (!is_numeric($_POST['new_ulon']) || strval($_POST['new_ulon'])>180.0 || strval($_POST['new_ulon'])<-180.0)){
             $isException = true;
             $message = $message.'longitude 輸入格式不對\n';
         }
@@ -39,6 +39,7 @@
         if($isException == true){
             throw new Exception($message);
         }
+        else{
         $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("update users set location=ST_GeomFromText(:location) where account='$uacc'");
@@ -55,6 +56,7 @@
         </html>
         EOT;
         exit();
+        }
     }
     catch(Exception $e){
         $msg = $e->getMessage();
