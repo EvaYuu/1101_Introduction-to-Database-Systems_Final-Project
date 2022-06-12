@@ -25,6 +25,8 @@
     $shop_owner = $stmt->fetch()['owner'];
 
     try{
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn->beginTransaction();
         $message ='';
         $isException = false;
         $total_price = $Delivery_fee;
@@ -101,7 +103,7 @@
         $stmt = $conn->prepare("update users set walletbalance=:walletbalance where account='$shop_owner'");
         $stmt->execute(array('walletbalance'=>$shop_bal));
 
-        // $conn->commit();
+        $conn->commit();
         echo <<< EOT
         <!DOCTYPE>
         <html>
