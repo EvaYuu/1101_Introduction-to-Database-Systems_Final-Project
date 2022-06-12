@@ -14,7 +14,8 @@
         }
         else{
             $hasorder = 1;
-            print_r($_SESSION['order_meal']);
+            //print_r($_SESSION['order_meal']);
+            unset($_SESSION['order_meal']);
         }
         
     }
