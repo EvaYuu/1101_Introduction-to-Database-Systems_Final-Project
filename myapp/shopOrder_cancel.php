@@ -50,6 +50,8 @@
         $stmt->execute(array('account'=>$seller, 'money'=>$money));
         $conn->commit();
 
+        unset($_SESSION['filter_result_shopOrder']);
+        unset($_SESSION['filter_result']);
         echo <<< EOT
             <!DOCTYPE>
             <html>
