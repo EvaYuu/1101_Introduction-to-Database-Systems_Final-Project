@@ -54,11 +54,11 @@
         if($isException == true){
             throw new Exception($message);
         }
-        // $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        // $conn->beginTransaction();
         //store order information
         $stmt = $conn->prepare("insert into orders(shop_name, user_account, status, start_time, delivery_distance, total_price, delivery_type) values(:shop_name, :user_account, 'Not Finished', now(), :delivery_distance, :total_price, :delivery_type)");
         $stmt->execute(array('shop_name'=>$order_shop, 'user_account'=>$uacc, 'delivery_distance'=>$shop_distance, 'total_price'=>$total_price, 'delivery_type'=>$Delivery_type));
+        $tmp = $conn->lastInsertId();
+        $OID = $tmp;
         //store order_menu information
         foreach($order_meal as $k => $v){
             if($v != 0){
@@ -69,8 +69,8 @@
                 $mimg = $meal['image'];
                 $mimgt = $meal['image_type'];
                 $mquan = $meal['quantity'];
-                $stmt = $conn->prepare("insert into order_menus(meal_name, price, order_quantity, image, image_type) values(:meal_name, :price, :order_quantity, :image, :image_type)");
-                $stmt->execute(array('meal_name'=>$k, 'price'=>$mprice, 'order_quantity'=>$v, 'image'=>$mimg, 'image_type'=>$mimgt));
+                $stmt = $conn->prepare("insert into order_menus(OID, meal_name, price, order_quantity, image, image_type) values(:OID, :meal_name, :price, :order_quantity, :image, :image_type)");
+                $stmt->execute(array('OID'=>$OID, 'meal_name'=>$k, 'price'=>$mprice, 'order_quantity'=>$v, 'image'=>$mimg, 'image_type'=>$mimgt));
                 // storage update
                 $amount_change = $mquan - $v;
                 $stmt = $conn->prepare("update menus set quantity = :amount_change where shop_name='$order_shop' and meal_name='$k'");
