@@ -48,6 +48,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <title>Hello, world!</title>
+  <style>
+  table td{
+    white-space: nowrap;
+  }
+  </style>
 
 </head>
 
@@ -130,8 +135,8 @@
                                 <td>$shop_name</td>
                                 <td>$total_price</td>
                                 <td><button type="button" class="btn btn-info" onclick="javascript:location.href='order_detail.php?order_id=$order_id';">order details</button></td>
-                                
                             EOT;
+
                             if($status=='Not finished'){
                               echo <<< EOT
                                 <td><button type="button" class="btn btn-danger" onclick="javascript:location.href='cancel.php?order_id=$order_id';">Cancel</button></td>
