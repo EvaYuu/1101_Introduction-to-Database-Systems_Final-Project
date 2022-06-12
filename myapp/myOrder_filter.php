@@ -27,7 +27,7 @@
     $mrow = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-    $_SESSION['filter_result'] = $mrow;
+    $_SESSION['filter_result_myOrder'] = $mrow;
     header("Location: myOrder.php");
     exit();
 ?>
