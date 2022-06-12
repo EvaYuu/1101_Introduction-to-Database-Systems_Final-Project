@@ -140,8 +140,8 @@
                           if($status=='Not Finished'){
                             echo <<< EOT
                               <td>
-                              <button type="button" class="btn btn-success" onclick="javascript:location.href='done.php?OID=$OID';">Done</button>
-                              <button type="button" class="btn btn-danger" onclick="javascript:location.href='cancel.php?OID=$OID';">Cancel</button>
+                              <button type="button" class="btn btn-success" onclick="javascript:location.href='shopOrder_done.php?OID=$OID';">Done</button>
+                              <button type="button" class="btn btn-danger" onclick="javascript:location.href='shopOrder_cancel.php?OID=$OID';">Cancel</button>
                               </td>
                               </tr>
                             EOT;
