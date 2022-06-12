@@ -16,13 +16,13 @@
 
     $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    if($fact=='All'){
-        $stmt = $conn->prepare("select * from orders where account=:account");
-        $stmt->execute(array('account'=>$uacc));
+    if($fsta=='All'){
+        $stmt = $conn->prepare("select * from orders where user_account=:user_account");
+        $stmt->execute(array('user_account'=>$uacc));
     }
     else{
-        $stmt = $conn->prepare("select * from orders where account=:account AND status=:status");
-        $stmt->execute(array('account'=>$uacc, 'status'=>$fsta));
+        $stmt = $conn->prepare("select * from orders where user_account=:user_account AND status=:status");
+        $stmt->execute(array('user_account'=>$uacc, 'status'=>$fsta));
     }
     $mrow = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

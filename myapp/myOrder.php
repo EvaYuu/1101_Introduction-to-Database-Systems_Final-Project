@@ -119,27 +119,27 @@
                         $mrow = $_SESSION['filter_result_myOrder'];
 
                         foreach ($mrow as $row) {
-                            $order_id = htmlentities($row['order_id']);
+                            $OID = htmlentities($row['OID']);
                             $status = htmlentities($row['status']);
-                            $start = htmlentities($row['start']);
-                            $end = htmlentities($row['end']);
+                            $start_time = htmlentities($row['start_time']);
+                            $end_time = htmlentities($row['end_time']);
                             $shop_name = htmlentities($row['shop_name']);
                             $total_price = htmlentities($row['total_price']);
                             
                             echo <<< EOT
                                 <tr>
-                                <th scope="row">$order_id</th>
+                                <th scope="row">$OID</th>
                                 <td>$status</td>
-                                <td>$start</td>
-                                <td>$end</td>
+                                <td>$start_time</td>
+                                <td>$end_time</td>
                                 <td>$shop_name</td>
                                 <td>$total_price</td>
-                                <td><button type="button" class="btn btn-info" onclick="javascript:location.href='order_detail.php?order_id=$order_id';">order details</button></td>
+                                <td><button type="button" class="btn btn-info" onclick="javascript:location.href='order_detail.php?OID=$OID';">order details</button></td>
                             EOT;
 
                             if($status=='Not finished'){
                               echo <<< EOT
-                                <td><button type="button" class="btn btn-danger" onclick="javascript:location.href='cancel.php?order_id=$order_id';">Cancel</button></td>
+                                <td><button type="button" class="btn btn-danger" onclick="javascript:location.href='myOrder_cancel.php?OID=$OID';">Cancel</button></td>
                                 </tr>
                               EOT;
                             }
