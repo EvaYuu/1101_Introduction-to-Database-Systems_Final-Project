@@ -30,7 +30,7 @@
             <html>
                 <body>
                     <script>
-                    alert('Cancel SUCCESS');
+                    alert('Done SUCCESS');
                     window.location.replace("shopOrder.php");
                     </script>
                 </body>
