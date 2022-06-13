@@ -23,6 +23,9 @@
         //update order status (Not Finished->Finished)
         $stmt = $conn->prepare("update orders set status='Finished' where OID=:OID");
         $stmt->execute(array('OID'=>$OID));
+        //write end_time
+        $stmt = $conn->prepare("update orders set end_time=now() where OID=:OID");
+        $stmt->execute(array('OID'=>$OID));
         $conn->commit();
 
         unset($_SESSION['filter_result_shopOrder']);
