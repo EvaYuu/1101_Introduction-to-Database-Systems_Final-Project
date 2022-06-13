@@ -48,6 +48,17 @@
         $stmt->execute(array('account'=>$seller, 'trader'=>$buyer, 'amount_change'=>$money));
         $stmt = $conn->prepare("update users set walletbalance=walletbalance+(:money) where account=:account");
         $stmt->execute(array('account'=>$seller, 'money'=>$money));
+        //turn back foods quantity
+        $stmt = $conn->prepare("select * from order_menus where OID=:OID");
+        $stmt->execute(array('OID'=>$OID));
+        $mrow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($mrow as $row) {
+            $meal_name = htmlentities($row['meal_name']);
+            $order_quantity = htmlentities($row['order_quantity']);
+            $stmt = $conn->prepare("update menus set quantity=quantity+(:order_quantity) where meal_name=:meal_name AND shop_name=:shop_name");
+            $stmt->execute(array('order_quantity'=>$order_quantity, 'meal_name'=>$meal_name, 'shop_name'=>$shop_name));
+        }
+        
         $conn->commit();
 
         unset($_SESSION['filter_result_shopOrder']);
