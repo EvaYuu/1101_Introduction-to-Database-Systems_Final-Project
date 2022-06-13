@@ -18,14 +18,6 @@
             exit();
         }
         $OID = $_GET['OID'];
-        //check status
-        $stmt = $conn->prepare("select * from orders where OID=:OID");
-        $stmt->execute(array('OID'=>$OID));
-        $row = $stmt->fetch();
-        $status = $row['status'];
-        if($status=='Cancel'){
-            throw new Exception('The order has been canceled by the buyer!');
-        }
 
         $conn->beginTransaction();
         //update order status (Not Finished->Finished)
@@ -50,11 +42,11 @@
         exit();
     }
     catch(Exception $e){
+        $msg = $e->getMessage();
         if($conn->inTransaction()){
             $conn->rollBack();
-            $msg='Cancel FAIL';
+            $msg = $msg.'\nDone FAIL';
         }
-        $msg = $e->getMessage();
         echo <<< EOT
             <!DOCTYPE>
             <html>
