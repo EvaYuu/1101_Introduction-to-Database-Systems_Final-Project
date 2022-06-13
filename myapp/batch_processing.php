@@ -10,6 +10,7 @@
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     try{
+  
         if(!isset($_GET['OID'])){
             throw new Exception('Something error');
         }

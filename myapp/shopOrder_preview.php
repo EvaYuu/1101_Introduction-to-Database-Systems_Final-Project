@@ -95,6 +95,10 @@
           </form>
 
         </div>
+        <form action="batch_processing.php" method='post'>
+        <input type="submit" class="btn btn-success" name="action" value = "Finish selected orders">
+        <input type="submit" class="btn btn-danger" name="action" value = "Cancel selected orders">
+        <input type="hidden" name="page" value="shopOrder_preview.php">
 
         <!---------------------------分隔線------------------------------>
         <div class="row">
@@ -134,8 +138,14 @@
                         $shop_name = htmlentities($row['shop_name']);
                         $total_price = htmlentities($row['total_price']);
                         
+                        echo "<tr>";
+                        if($row['status'] == "Not Finished"){
+                          echo "<td> <input type='checkbox' name='ID[]' value='$OID'></td>";
+                        }
+                        else{
+                          echo "<td></td>";
+                        }
                         echo <<< EOT
-                            <tr>
                             <th scope="row">$OID</th>
                             <td>$status</td>
                             <td>$start_time</td>
@@ -169,6 +179,7 @@
             </table>
           </div>
         </div>
+        <form>
       </div>
 
 
