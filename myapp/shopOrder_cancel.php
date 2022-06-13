@@ -61,15 +61,13 @@
         
         $conn->commit();
 
-        unset($_SESSION['filter_result_shopOrder']);
-        unset($_SESSION['filter_result']);
         echo <<< EOT
             <!DOCTYPE>
             <html>
                 <body>
                     <script>
                     alert('Cancel SUCCESS');
-                    window.location.replace("shopOrder.php");
+                    window.location.replace("shopOrder_preview.php");
                     </script>
                 </body>
             </html>
@@ -88,7 +86,7 @@
                 <body>
                     <script>
                     alert("$msg");
-                    window.location.replace("shopOrder.php");
+                    window.location.replace("shopOrder_preview.php");
                     </script>
                 </body>
             </html>
