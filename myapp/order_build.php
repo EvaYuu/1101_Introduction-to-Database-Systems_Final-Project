@@ -98,6 +98,7 @@
         $stmt = $conn->prepare("select shops.shop_name, users.account, users.walletbalance, shops.owner as owner from shops inner JOIN users on shops.owner = users.account where shop_name='$order_shop'");
         $stmt->execute();
         $shop_info = $stmt->fetch();
+        // print_r($shop_info);
         $shop_bal = $shop_info['walletbalance'];
         $shop_owner = $shop_info['owner'];
         $shop_bal += $total_price;

@@ -26,6 +26,9 @@
         if($status=='Finished'){
             throw new Exception('The order has been finished!');
         }
+        else if($status=='Cancel'){
+            throw new Exception('The order has been canceled by the shop!');
+        }
         //get user(account) & shop(trader) info
         $stmt = $conn->prepare("select * from orders where OID=:OID");
         $stmt->execute(array('OID'=>$OID));

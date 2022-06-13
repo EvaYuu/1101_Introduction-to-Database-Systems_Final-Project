@@ -15,12 +15,21 @@
         }
         $mri = $_GET['mrow'];
         $mri -= 1;
-        // echo "mri = $mri";
+        
+
         $stmt = $conn->prepare("select shop_name, meal_name from menus where shop_name='$sname'");
         $stmt->execute();
         $mrow = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $mname = $mrow[$mri]['meal_name'];
+        //check meal not in unfinished
+        $stmt = $conn->prepare("select * from order_menus natural join orders where shop_name = :shop_name and status='Not Finished' and meal_name = :meal_name;");
+        $stmt->execute(array('shop_name'=>$sname, 'meal_name'=>$mname));
+
+        if($stmt->rowCount()!=0){
+            throw new Exception('There is unfinished order so you cannot delete it!');
+        }
+
         $stmt = $conn->prepare("delete from menus where shop_name='$sname' and meal_name='$mname'");
         $stmt->execute();
         throw new Exception('DELETE SUCCESS');
