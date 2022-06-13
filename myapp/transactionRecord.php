@@ -73,7 +73,7 @@
 
     <div class="tab-content">
         <div class=" row  col-xs-8">
-
+          
           <form class="form-horizontal" action="transaction_filter.php" method='post'>
             <div class="form-group"><br>
               <label class="control-label col-sm-1" for="action">Action</label>
@@ -131,7 +131,8 @@
                                 </tr>
                             EOT;
                         }
-                      }                      
+                      } 
+                      unset($_SESSION['filter_result']);                     
                   ?>
               </tbody>
             </table>
