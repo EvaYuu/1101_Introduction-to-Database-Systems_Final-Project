@@ -1,6 +1,6 @@
 <?php
     session_start();
-    header("Refresh: 20;url='myOrder.php'");
+    // header("Refresh: 20;url='myOrder.php'");
     $dbservername='localhost';
     $dbname='databasehw';
     $dbusername='root';
@@ -93,8 +93,12 @@
                 
               </div>
           </form>
-
+         
         </div>
+        <form action="myOrder_cancel_batch.php" method='post'>
+        <button type="submit" class="btn btn-success" >Finish selected orders</button>
+        <button type="submit" class="btn btn-danger" >Cancel selected orders</button>
+        <input type="hidden" name="action" value="cancel">
 
         <!---------------------------分隔線------------------------------>
         <div class="row">
@@ -102,6 +106,7 @@
             <table class="table" style=" margin-top: 15px;">
               <thead>
                 <tr>
+                  <th></th>
                   <th scope="col">Order ID</th>
                   <th scope="col">Status</th>
                   <th scope="col">Start</th>
@@ -128,6 +133,7 @@
                             
                             echo <<< EOT
                                 <tr>
+                                <td> <input type="checkbox" name="ID[]" value="$OID"></td>
                                 <th scope="row">$OID</th>
                                 <td>$status</td>
                                 <td>$start_time</td>
@@ -158,6 +164,7 @@
             </table>
           </div>
         </div>
+        <form>
       </div>
 
 
