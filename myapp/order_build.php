@@ -57,8 +57,7 @@
         //store order information
         $stmt = $conn->prepare("insert into orders(shop_name, user_account, status, start_time, delivery_distance, total_price, delivery_type) values(:shop_name, :user_account, 'Not Finished', now(), :delivery_distance, :total_price, :delivery_type)");
         $stmt->execute(array('shop_name'=>$order_shop, 'user_account'=>$uacc, 'delivery_distance'=>$shop_distance, 'total_price'=>$total_price, 'delivery_type'=>$Delivery_type));
-        $tmp = $conn->lastInsertId();
-        $OID = $tmp;
+        $OID = $conn->lastInsertId();
         //store order_menu information
         foreach($order_meal as $k => $v){
             if($v != 0){
@@ -109,8 +108,8 @@
         <html>
             <body>
                 <script>
-                alert("訂購成功");
-                window.location.replace("nav.php");
+                alert("訂購成功 你的訂單編號是：$OID");
+                window.location.replace("myOrder_preview.php");
                 </script>
             </body>
         </html>
