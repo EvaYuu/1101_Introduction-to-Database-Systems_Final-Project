@@ -48,6 +48,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <title>Hello, world!</title>
+  <style>
+  table td{
+    white-space: nowrap;
+  }
+  </style>
 
 </head>
 
@@ -65,25 +70,25 @@
     <ul class="nav nav-tabs">
       <li><a href="nav.php">Home</a></li>
       <li><a href="shop.php">Shop</a></li>
-      <li><a href="myOrder_preview.php">MyOrder</a></li>
+      <li class="active"><a href="myOrder_preview.php">MyOrder</a></li>
       <li><a href="shopOrder_preview.php">Shop Order</a></li>
-      <li class="active"><a href="transactionRecord_preview.php">Transaction Record</a></li>
+      <li><a href="transactionRecord_preview.php">Transaction Record</a></li>
       <li><a href="Logout.php">Log out</a></li>
     </ul>
 
     <div class="tab-content">
         <div class=" row  col-xs-8">
-          
-          <form class="form-horizontal" action="transaction_filter.php" method='post'>
+
+          <form class="form-horizontal" action="myOrder_filter.php" method='post'>
             <div class="form-group"><br>
-              <label class="control-label col-sm-1" for="action">Action</label>
+              <label class="control-label col-sm-1" for="status">Status</label>
               <div class="col-sm-5">
-                <select class="form-control" id="filter" name="filter_action" onchange="this.form.submit()">
+                <select class="form-control" id="filter" name="filter_status" onchange="this.form.submit()">
                   <option>-- Select --</option>
-                  <option>All</option>
-                  <option>Payment</option>
-                  <option>Receive</option>
-                  <option>Recharge</option>
+                  <option selected="selected">All</option>
+                  <option>Finished</option>
+                  <option>Not Finished</option>
+                  <option>Cancel</option>
                 </select>
                 
               </div>
@@ -97,42 +102,59 @@
             <table class="table" style=" margin-top: 15px;">
               <thead>
                 <tr>
-                  <th scope="col">Record ID</th>
+                  <th scope="col">Order ID</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Start</th>
+                  <th scope="col">End</th>
+                  <th scope="col">Shop name</th>
+                  <th scope="col">Total Price</th>
+                  <th scope="col">Order Details</th>
                   <th scope="col">Action</th>
-                  <th width="80%" scope="col">Time</th>
-                  <th scope="col">Trader</th>
-                  <th scope="col">Amount change</th>
                 </tr>
               </thead>
               <tbody>                
                   <?php
-                     
-                      if(isset($_SESSION['filter_result'])){
-                        $mrow = $_SESSION['filter_result'];
+                    //TODO: filtered information 
+                    $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
+                    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    $stmt = $conn->prepare("select * from orders where user_account=:user_account");
+                    $stmt->execute(array('user_account'=>$uacc));
+                    $mrow = $stmt->fetchAll(PDO::FETCH_ASSOC);   
 
-                        //$i = 0;
-                        foreach ($mrow as $row) {
-                            //$i = $i + 1;
-                            $record_id = htmlentities($row['record_id']);
-                            $action = htmlentities($row['action']);
-                            $time = htmlentities($row['time']);
-                            $trader = htmlentities($row['trader']);
-                            $amount_change = htmlentities($row['amount_change']);
-                            //force to show the sign
-                            $amount_change = sprintf('%+d', $amount_change);
-                            
+                    foreach ($mrow as $row) {
+                        $OID = htmlentities($row['OID']);
+                        $status = htmlentities($row['status']);
+                        $start_time = htmlentities($row['start_time']);
+                        $end_time = htmlentities($row['end_time']);
+                        $shop_name = htmlentities($row['shop_name']);
+                        $total_price = htmlentities($row['total_price']);
+                        
+                        echo <<< EOT
+                            <tr>
+                            <th scope="row">$OID</th>
+                            <td>$status</td>
+                            <td>$start_time</td>
+                            <td>$end_time</td>
+                            <td>$shop_name</td>
+                            <td>$total_price</td>
+                            <td><button type="button" class="btn btn-info" onclick="javascript:location.href='order_details.php?OID=$OID&page=myOrder';">order details</button></td>
+                        EOT;
+
+                        if($status=='Not Finished'){
                             echo <<< EOT
-                                <tr>
-                                <th scope="row">$record_id</th>
-                                <td>$action</td>
-                                <td>$time</td>
-                                <td>$trader</td>
-                                <td>$amount_change</td>
-                                </tr>
+                            <td><button type="button" class="btn btn-danger" onclick="javascript:location.href='myOrder_cancel.php?OID=$OID';">Cancel</button></td>
+                            </tr>
                             EOT;
                         }
-                      } 
-                      unset($_SESSION['filter_result']);                     
+                        else{
+                            echo <<< EOT
+                            <td> </td>
+                            </tr>
+                            EOT;
+                        }
+                        
+                    }                  
+                      
                   ?>
               </tbody>
             </table>

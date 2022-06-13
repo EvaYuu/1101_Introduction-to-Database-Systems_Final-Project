@@ -85,7 +85,7 @@
               <div class="col-sm-5">
                 <select class="form-control" id="filter" name="filter_status" onchange="this.form.submit()">
                   <option>-- Select --</option>
-                  <option>All</option>
+                  <option selected="selected">All</option>
                   <option>Finished</option>
                   <option>Not Finished</option>
                   <option>Cancel</option>
@@ -115,46 +115,54 @@
               <tbody>                
                   <?php
                     //TODO: filtered information
-                    if(isset($_SESSION['filter_result_shopOrder'])){
-                      $mrow = $_SESSION['filter_result_shopOrder'];
+                    $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
+                    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    //get shop name
+                    $stmt = $conn->prepare("select * from shops where owner=:owner");
+                    $stmt->execute(array('owner'=>$uacc));
+                    $row = $stmt->fetch();
+                    $shop_name = $row['shop_name'];
+                    $stmt = $conn->prepare("select * from orders where shop_name=:shop_name");
+                    $stmt->execute(array('shop_name'=>$shop_name));
+                    $mrow = $stmt->fetchAll(PDO::FETCH_ASSOC);   
 
-                      foreach ($mrow as $row) {
-                          $OID = htmlentities($row['OID']);
-                          $status = htmlentities($row['status']);
-                          $start_time = htmlentities($row['start_time']);
-                          $end_time = htmlentities($row['end_time']);
-                          $shop_name = htmlentities($row['shop_name']);
-                          $total_price = htmlentities($row['total_price']);
-                          
-                          echo <<< EOT
-                              <tr>
-                              <th scope="row">$OID</th>
-                              <td>$status</td>
-                              <td>$start_time</td>
-                              <td>$end_time</td>
-                              <td>$shop_name</td>
-                              <td>$total_price</td>
-                              <td><button type="button" class="btn btn-info" onclick="javascript:location.href='order_details.php?OID=$OID&page=shopOrder';">order details</button></td>
-                          EOT;
-                          
-                          if($status=='Not Finished'){
-                            echo <<< EOT
-                              <td>
-                              <button type="button" class="btn btn-success" onclick="javascript:location.href='shopOrder_done.php?OID=$OID';">Done</button>
-                              <button type="button" class="btn btn-danger" onclick="javascript:location.href='shopOrder_cancel.php?OID=$OID';">Cancel</button>
-                              </td>
-                              </tr>
-                            EOT;
-                          }
-                          else{
-                            echo <<< EOT
-                              <td> </td>
-                              </tr>
-                            EOT;
-                          }
-                          
-                      }
-                    } 
+                    foreach ($mrow as $row) {
+                        $OID = htmlentities($row['OID']);
+                        $status = htmlentities($row['status']);
+                        $start_time = htmlentities($row['start_time']);
+                        $end_time = htmlentities($row['end_time']);
+                        $shop_name = htmlentities($row['shop_name']);
+                        $total_price = htmlentities($row['total_price']);
+                        
+                        echo <<< EOT
+                            <tr>
+                            <th scope="row">$OID</th>
+                            <td>$status</td>
+                            <td>$start_time</td>
+                            <td>$end_time</td>
+                            <td>$shop_name</td>
+                            <td>$total_price</td>
+                            <td><button type="button" class="btn btn-info" onclick="javascript:location.href='order_details.php?OID=$OID&page=shopOrder';">order details</button></td>
+                        EOT;
+                        
+                        if($status=='Not Finished'){
+                        echo <<< EOT
+                            <td>
+                            <button type="button" class="btn btn-success" onclick="javascript:location.href='shopOrder_done.php?OID=$OID';">Done</button>
+                            <button type="button" class="btn btn-danger" onclick="javascript:location.href='shopOrder_cancel.php?OID=$OID';">Cancel</button>
+                            </td>
+                            </tr>
+                        EOT;
+                        }
+                        else{
+                        echo <<< EOT
+                            <td> </td>
+                            </tr>
+                        EOT;
+                        }
+                        
+                    }
+                    
 
                   ?>
               </tbody>

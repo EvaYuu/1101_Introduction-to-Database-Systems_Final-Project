@@ -80,7 +80,7 @@
               <div class="col-sm-5">
                 <select class="form-control" id="filter" name="filter_action" onchange="this.form.submit()">
                   <option>-- Select --</option>
-                  <option>All</option>
+                  <option selected="selected">All</option>
                   <option>Payment</option>
                   <option>Receive</option>
                   <option>Recharge</option>
@@ -106,33 +106,32 @@
               </thead>
               <tbody>                
                   <?php
-                     
-                      if(isset($_SESSION['filter_result'])){
-                        $mrow = $_SESSION['filter_result'];
+                    $conn = new PDO("mysql:host=$dbservername;dbname=$dbname",$dbusername,$dbpassword);
+                    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    $stmt = $conn->prepare("select * from transactions where account=:account");
+                    $stmt->execute(array('account'=>$uacc));
+                    $mrow = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                        //$i = 0;
-                        foreach ($mrow as $row) {
-                            //$i = $i + 1;
-                            $record_id = htmlentities($row['record_id']);
-                            $action = htmlentities($row['action']);
-                            $time = htmlentities($row['time']);
-                            $trader = htmlentities($row['trader']);
-                            $amount_change = htmlentities($row['amount_change']);
-                            //force to show the sign
-                            $amount_change = sprintf('%+d', $amount_change);
-                            
-                            echo <<< EOT
-                                <tr>
-                                <th scope="row">$record_id</th>
-                                <td>$action</td>
-                                <td>$time</td>
-                                <td>$trader</td>
-                                <td>$amount_change</td>
-                                </tr>
-                            EOT;
-                        }
-                      } 
-                      unset($_SESSION['filter_result']);                     
+                    foreach ($mrow as $row) {
+                        $record_id = htmlentities($row['record_id']);
+                        $action = htmlentities($row['action']);
+                        $time = htmlentities($row['time']);
+                        $trader = htmlentities($row['trader']);
+                        $amount_change = htmlentities($row['amount_change']);
+                        //force to show the sign
+                        $amount_change = sprintf('%+d', $amount_change);
+                        
+                        echo <<< EOT
+                            <tr>
+                            <th scope="row">$record_id</th>
+                            <td>$action</td>
+                            <td>$time</td>
+                            <td>$trader</td>
+                            <td>$amount_change</td>
+                            </tr>
+                        EOT;
+                    }
+                                      
                   ?>
               </tbody>
             </table>
