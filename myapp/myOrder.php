@@ -96,7 +96,6 @@
          
         </div>
         <form action="batch_processing.php" method='post'>
-        <input type="submit" class="btn btn-success" name="action" value = "Finish selected orders">
         <input type="submit" class="btn btn-danger" name="action" value = "Cancel selected orders">
         <input type="hidden" name="page" value="shopOrder_preview.php">
 
@@ -139,7 +138,6 @@
                               echo "<td></td>";
                             }
                             echo <<< EOT
-                                <td> <input type="checkbox" name="ID[]" value="$OID"></td>
                                 <th scope="row">$OID</th>
                                 <td>$status</td>
                                 <td>$start_time</td>

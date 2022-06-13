@@ -96,7 +96,6 @@
 
         </div>
         <form action="batch_processing.php" method='post'>
-        <input type="submit" class="btn btn-success" name="action" value = "Finish selected orders">
         <input type="submit" class="btn btn-danger" name="action" value = "Cancel selected orders">
         <input type="hidden" name="page" value="myOrder_preview.php">
 
