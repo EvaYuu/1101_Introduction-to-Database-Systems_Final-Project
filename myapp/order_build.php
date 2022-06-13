@@ -39,11 +39,13 @@
                     $isException = true;
                     $message = $message.'Some of the meals have been deleted.\n';
                 }
-                if($v > $meal['quantity']){
-                    $isException = true;
-                    $message = $message.$k.'    order amount > shop quantity\n';
-                }
-                $total_price += $meal['price'] * $v;
+                else{
+                    if($v > $meal['quantity']){
+                        $isException = true;
+                        $message = $message.$k.'    order amount > shop quantity\n';
+                    }
+                    $total_price += $meal['price'] * $v;
+                }             
             }
         }
         if($total_price > $uwal){
@@ -81,7 +83,7 @@
         //user->Payment
         $payment = (-1)*$total_price;
         $stmt = $conn->prepare("insert into transactions(account, action, trader, amount_change) values(:account, 'Payment', :trader, :amount_change)");
-        $stmt->execute(array('account'=>$uacc, 'trader'=>$orde_shop, 'amount_change'=>$payment));
+        $stmt->execute(array('account'=>$uacc, 'trader'=>$order_shop, 'amount_change'=>$payment));
         //shop->Receive
         $receive = $total_price;
         $stmt = $conn->prepare("insert into transactions(account, action, trader, amount_change) values(:account, 'Receive', :trader, :amount_change)");
