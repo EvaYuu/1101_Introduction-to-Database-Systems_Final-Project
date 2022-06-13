@@ -137,7 +137,7 @@
                             <td>$end_time</td>
                             <td>$shop_name</td>
                             <td>$total_price</td>
-                            <td><button type="button" class="btn btn-info" onclick="javascript:location.href='order_details.php?OID=$OID&page=myOrder';">order details</button></td>
+                            <td><button type="button" class="btn btn-info" onclick="javascript:location.href='order_details.php?OID=$OID&page=myOrder_preview';">order details</button></td>
                         EOT;
 
                         if($status=='Not Finished'){
