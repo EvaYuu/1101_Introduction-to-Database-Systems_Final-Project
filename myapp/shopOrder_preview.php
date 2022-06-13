@@ -1,6 +1,6 @@
 <?php
     session_start();
-
+    header("Refresh: 20;url='shopOrder_preview.php'");
     $dbservername='localhost';
     $dbname='databasehw';
     $dbusername='root';
