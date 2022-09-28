@@ -105,7 +105,7 @@
             <table class="table" style=" margin-top: 15px;">
               <thead>
                 <tr>
-                  <th></th>
+                  <th scope="col">Pick</th>
                   <th scope="col">Order ID</th>
                   <th scope="col">Status</th>
                   <th scope="col">Start</th>
